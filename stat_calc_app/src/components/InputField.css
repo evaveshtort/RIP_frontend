@@ -1,11 +1,32 @@
 .inputField {
     display: flex;
-    padding: 12px 0;
+    padding-left: 15px;
 }
 .inputField > input {
-    width: 200px;
-    margin-right: 12px;
-    border: 2px solid black;
-    border-radius: 4px;
-    outline: none;
+    width: 250px;
+    height: 30px;
+    border-radius: 20px;
+    border-color: #910ed8;
+    border-width: 0.1px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: monospace;
+    font-size: large;
+    font-weight: lighter;
+    background-color: #fefefe;
+    color: #000000
+}
+
+.inputField > button {
+    background-color:#910ed8;
+    height: 35px;
+    border-width: 0;
+    margin-left: 5px;
+    width: 80px;
+    color: #ffffff;
+    border-radius: 20px;
+    font-family: monospace;
+    font-weight: lighter;
+    font-size: large;
+    text-align: center;
 }

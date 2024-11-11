@@ -11,11 +11,13 @@ interface Props {
     buttonTitle?: string
 }
 
-const InputField: FC<Props> = ({ value, setValue, onSubmit, loading, placeholder, buttonTitle = 'Искать' }) => (
+const InputField: FC<Props> = ({ value, setValue, onSubmit, loading, placeholder, buttonTitle = 'Поиск'}) => (
     <div className="inputField">
         <input value={value} placeholder={placeholder} onChange={(event => setValue(event.target.value))}/>
         <Button disabled={loading} onClick={onSubmit}>{buttonTitle}</Button>
     </div>
+    
+
 )
 
 export default InputField

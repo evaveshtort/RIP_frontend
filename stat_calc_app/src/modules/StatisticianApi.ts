@@ -5,8 +5,9 @@ export interface Metric {
     description: string;
   }
   export interface MetricResult {
-    draftCalculationId: number;
-    metricsCount: number;
+    draft_calculation_id: number;
+    metrics_count: number;
+    reset_flag: boolean;
     metrics: Metric[];
   }
   

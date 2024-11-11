@@ -1,6 +1,42 @@
-.album_page_loader_block {
+/* .album_page_loader_block {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+  } */
+
+  .metricPage {
+    display: flex;
+    flex-direction: column;
+    padding: 60px;
+    padding-top: 40px;
   }
+  
+  .metricTitle {
+    font-family: monospace;
+    font-size: xx-large;
+    font-weight: lighter;
+    padding-bottom: 20px;
+    color:black
+  }
+
+  p {
+    font-size:x-large;
+    font-family:monospace;
+    font-weight: lighter;
+    color:rgba(0,0,0,0.6);
+  }
+  
+  .infoSpace {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .loadingBg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+  

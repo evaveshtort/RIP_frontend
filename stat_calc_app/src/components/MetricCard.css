@@ -1,4 +1,4 @@
-.card {
+/* .card {
     padding: 8px;
 }
 .loadingBg {
@@ -21,4 +21,43 @@
 }
 .cardButton {
     width: 100%;
-}
+} */
+
+.flex_container_card {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.3s;
+    padding: 16px;
+    border-radius: 5px;
+    width: 30%
+  }
+
+  .container {
+    padding-left: 0;
+  }
+  
+  .card-title {
+    font-size: x-large;
+    font-family: monospace;
+    font-weight: lighter;
+    color:black
+  }
+  
+  .card-link {
+    color: #910ed8;
+    font-size: x-large;
+    font-family: monospace;
+    font-weight: lighter;
+  }
+  
+  .card-link:hover {
+    color: #e4c200;
+  }
+  
+  .cardImage {
+    width: 100%;
+    height: auto;
+  }
+  

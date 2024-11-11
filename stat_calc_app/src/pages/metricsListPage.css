@@ -1,4 +1,4 @@
-.container {
+/* .container {
   display: flex;
   flex-direction: column;
   padding: 20px 40px;
@@ -12,4 +12,61 @@
   .container{
       min-width: auto;
   }
+} */
+
+h1 {
+  color:black;
+  font-family: monospace;
+  font-weight: lighter;
 }
+
+.container {
+  padding: 20px;
+}
+
+.loadingBg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.searchForm {
+  display: flex;
+  align-items: center;
+}
+
+.underHead {
+  display: flex;
+  justify-content: space-between;
+}
+
+.metricsNum {
+  background-color: #910ed8;
+  color:#ffffff;
+  border-radius: 8px;
+  width:15px;
+  height: 15px;
+  text-decoration: none;
+  text-align: center;
+  font-family: monospace;
+}
+
+.cartWithNum {
+  display: flex;
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-left: 10%;
+}
+
+.emptyList {
+  display: flex;
+  font-size:xx-large;
+  font-family:monospace;
+}
+
+

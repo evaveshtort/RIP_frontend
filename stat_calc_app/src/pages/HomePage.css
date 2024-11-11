@@ -1,0 +1,7 @@
+#root {
+    min-height: 100vh;  /* Убедитесь, что root растягивается на всю высоту экрана */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #fefefe;
+  }
