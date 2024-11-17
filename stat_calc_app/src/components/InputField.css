@@ -30,3 +30,7 @@
     font-size: large;
     text-align: center;
 }
+
+.inputField > button:hover {
+    background-color: #e4c200;
+  }

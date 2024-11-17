@@ -10,6 +10,12 @@ export interface Metric {
     reset_flag: boolean;
     metrics: Metric[];
   }
+
+  export const getAllMetrics = async (): Promise<MetricResult> => {
+    return fetch(`/api/metrics/`).then(
+      (response) => response.json()
+    );
+  };
   
   export const getMetricByName = async (name = ""): Promise<MetricResult> => {
     return fetch(`/api/metrics/?metricName=${name}`).then(

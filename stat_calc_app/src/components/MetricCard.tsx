@@ -38,6 +38,7 @@ import { Card } from "react-bootstrap";
 import "./MetricCard.css";
 
 interface ICardProps {
+  key: number;
   title: string;
   picture_url: string;
   imageClickHandler: () => void;
@@ -49,7 +50,7 @@ export const MetricCard: FC<ICardProps> = ({
   imageClickHandler,
 }) => (
   <Card className="flex_container_card">
-    <div className="container">
+    <div className="card_container">
       <img
         className="cardImage"
         src={picture_url}

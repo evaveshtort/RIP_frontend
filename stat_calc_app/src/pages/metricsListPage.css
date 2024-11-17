@@ -50,6 +50,7 @@ h1 {
   text-decoration: none;
   text-align: center;
   font-family: monospace;
+  line-height: 15px;
 }
 
 .cartWithNum {
@@ -60,7 +61,7 @@ ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding-left: 10%;
+  padding-left: 7%;
 }
 
 .emptyList {
