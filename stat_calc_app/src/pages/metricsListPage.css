@@ -68,6 +68,9 @@ ul {
   display: flex;
   font-size:xx-large;
   font-family:monospace;
+  padding-top: 30px;
+  padding-left: 30px;
+  color: black;
 }
 
 

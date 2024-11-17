@@ -7,10 +7,11 @@ import { MetricCard } from "../components/MetricCard";
 import { useNavigate } from "react-router-dom";
 import BasePage from "./BasePage";
 import { ROUTES, ROUTE_LABELS } from "../../Routes.tsx";
+import { METRICS_MOCK } from "../modules/mock";
 
 const MetricsListPage: FC = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [cnt_metrics, setCnt] = useState<number>(0);
   const [calculation_id, setId] = useState<number>(0);
@@ -19,31 +20,44 @@ const MetricsListPage: FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    getAllMetrics().then((response) => {
+    getAllMetrics()
+    .then((response) => {
       setMetrics(response.metrics);
-      setLoading(false);
       setCnt(response.metrics_count);
       setId(response.draft_calculation_id);
-      setFlag(response.reset_flag)
+      setFlag(response.reset_flag);
+      setLoading(false);
+    })
+    .catch(() => { 
+      setMetrics(
+        METRICS_MOCK.metrics
+      );
+      setLoading(false);
     });
   }, []);
 
   const handleSearch = () => {
     setLoading(true);
-    getMetricByName(searchValue).then((response) => {
-      console.log('Back response', response)
-      setMetrics([...response.metrics]);
+    getMetricByName(searchValue)
+    .then((response) => {
+      setMetrics(response.metrics);
       setCnt(response.metrics_count);
       setId(response.draft_calculation_id);
-      setFlag(response.reset_flag)
+      setFlag(response.reset_flag);
+      setLoading(false);
+    })
+    .catch(() => { // В случае ошибки используем mock данные, фильтруем по имени
+      setMetrics(
+        METRICS_MOCK.metrics.filter((item) =>
+          item.title
+            .toLocaleLowerCase()
+            .startsWith(searchValue.toLocaleLowerCase())
+        )
+      );
+      setLoading(false);
     });
   };
-
-  useEffect(() => {
-    console.log('metrics', metrics);
-    console.log('metrics_length', metrics.length);
-    setLoading(false);
-  }, [metrics])
+  
 
   const handleCardClick = (id: number) => {
     navigate(`/metrics/${id}`);
