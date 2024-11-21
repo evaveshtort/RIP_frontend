@@ -31,7 +31,8 @@
     transition: 0.3s;
     padding: 16px;
     border-radius: 5px;
-    width: 30%
+    width: 100%;
+    border: none;
   }
 
   .card_container {
@@ -42,7 +43,8 @@
     font-size: x-large;
     font-family: monospace;
     font-weight: lighter;
-    color:black
+    color:black;
+    padding-top: 10px;
   }
   
   .card-link {

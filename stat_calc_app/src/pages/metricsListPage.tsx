@@ -46,7 +46,7 @@ const MetricsListPage: FC = () => {
       setFlag(response.reset_flag);
       setLoading(false);
     })
-    .catch(() => { // В случае ошибки используем mock данные, фильтруем по имени
+    .catch(() => {
       setMetrics(
         METRICS_MOCK.metrics.filter((item) =>
           item.title
@@ -90,13 +90,13 @@ const MetricsListPage: FC = () => {
               onClick={handleResetClick}
             />)}
           </div>
-          <div className="cartWithNum">
+          {/* <div className="cartWithNum">
               <div className="metricsNum">{cnt_metrics}</div>
                 <img
                   src="http://localhost:9000/items/shopping-cart.png"
                   style={{ height: "35px" }}
                 />
-            </div>
+            </div> */}
         </div>
 
         {loading && (
@@ -104,24 +104,26 @@ const MetricsListPage: FC = () => {
             <Spinner animation="border" />
           </div>
         )}
-        
+        <Row style={{paddingLeft: '9%'}}>
         {!loading && (
           (!metrics.length || metrics.length === 0) ? (
-          <div className="emptyList">
-            К сожалению, пока ничего не найдено
-          </div>
-        ) : (
-          <ul>
-            {metrics.map((metric) => (
-              <MetricCard
-                key = {metric.metric_id}
-                title={metric.title}
-                picture_url={metric.picture_url}
-                imageClickHandler={() => handleCardClick(metric.metric_id)}
-              />
-            ))}
-          </ul>
-        ))}
+            <div className="emptyList">
+              К сожалению, пока ничего не найдено
+            </div>
+          ) : (
+            metrics.map((metric) => (
+              <Col key={metric.metric_id} xs={4} md={4} lg={4}>
+                <MetricCard
+                  key={metric.metric_id}
+                  title={metric.title}
+                  picture_url={metric.picture_url}
+                  imageClickHandler={() => handleCardClick(metric.metric_id)}
+                />
+              </Col>
+            ))
+          )
+        )}
+      </Row>
       </div>
     </BasePage>
   );

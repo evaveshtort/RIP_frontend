@@ -27,3 +27,12 @@
   .container {
     margin-left: 30px;
   }
+
+  .carouselItem {
+    max-width: 100%;
+  }
+
+  h3{
+    font-family: monospace;
+    font-weight: lighter;
+  }

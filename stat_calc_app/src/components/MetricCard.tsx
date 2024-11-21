@@ -21,7 +21,7 @@ export const MetricCard: FC<ICardProps> = ({
         className="cardImage"
         src={picture_url || image}
         alt="card"
-        style={{width:"60%"}}
+        style={{width:"70%"}}
       />
       <div className="card-title">
         {title}

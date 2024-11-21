@@ -26,11 +26,11 @@ const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
           <BreadCrumbs crumbs={crumbs} />
         </div>
 
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="none" expand="lg">
         <Container>
             <Nav className="navbar">
               <Nav.Link href={ROUTES.METRICS}>Метрики</Nav.Link>
-              <Nav.Link href="#ссылканарасчеты">Расчеты</Nav.Link>
+              {/* <Nav.Link href="#ссылканарасчеты">Расчеты</Nav.Link> */}
             </Nav>
         </Container>
       </Navbar>
