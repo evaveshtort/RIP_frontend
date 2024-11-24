@@ -1,89 +1,79 @@
 import "./metricsListPage.css";
 import { FC, useState, useEffect } from "react";
-import { Col, Row, Spinner } from "react-bootstrap";
 import { Metric, getAllMetrics, getMetricByName } from "../modules/StatisticianApi";
-import InputField from "../components/InputField";
-import { MetricCard } from "../components/MetricCard";
 import { useNavigate } from "react-router-dom";
 import BasePage from "./BasePage";
 import { ROUTES, ROUTE_LABELS } from "../../Routes.tsx";
 import { METRICS_MOCK } from "../modules/mock";
+import MetricsList from "../components/MetricsList";
+import MetricFilter from "../components/MetricsFilter";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchQuery, triggerFilter, resetFilter, resetSearchQuery} from "../features/metricsFilterSlice";
+import { RootState } from "../app/store";
 import '../components/InputField.css';
 
 const MetricsListPage: FC = () => {
-  const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [metrics, setMetrics] = useState<Metric[]>([]);
-  // const [cnt_metrics, setCnt] = useState<number>(0);
-  // const [calculation_id, setId] = useState<number>(0);
-  const [reset_flag, setFlag] = useState<boolean>(false);
+  const [resetFlag, setResetFlag] = useState<boolean>(false);
+  const searchValue = useSelector((state: RootState) => state.metricsFilter.searchQuery); 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
+    document.documentElement.style.setProperty('--button-color-hover', '#a0ed6f');
     getAllMetrics()
-    .then((response) => {
-      setMetrics(response.metrics);
-      // setCnt(response.metrics_count);
-      // setId(response.draft_calculation_id);
-      setFlag(response.reset_flag);
-      setLoading(false);
-      document.documentElement.style.setProperty('--button-color-hover', '#a0ed6f')
-    })
-    .catch(() => { 
-      setMetrics(
-        METRICS_MOCK.metrics
-      );
-      setLoading(false);
-      document.documentElement.style.setProperty('--button-color-hover', '#a0ed6f')
-    });
+      .then((response) => {
+        setMetrics(response.metrics);
+        setResetFlag(response.reset_flag);
+        setLoading(false);
+      })
+      .catch(() => {
+        setMetrics(METRICS_MOCK.metrics);
+        setLoading(false);
+      });
   }, []);
 
   const handleSearch = () => {
+    console.log("handleSearch вызван");
     setLoading(true);
+    document.documentElement.style.setProperty('--button-color-hover', '#e4c200');
+    dispatch(triggerFilter());
     getMetricByName(searchValue)
-    .then((response) => {
-      setMetrics(response.metrics);
-      // setCnt(response.metrics_count);
-      // setId(response.draft_calculation_id);
-      setFlag(response.reset_flag);
-      setLoading(false);
-      document.documentElement.style.setProperty('--button-color-hover', '#e4c200')
-    })
-    .catch(() => {
-      setMetrics(
-        METRICS_MOCK.metrics.filter((item) =>
-          item.title
-            .toLocaleLowerCase()
-            .startsWith(searchValue.toLocaleLowerCase())
-        )
-      );
-      setLoading(false);
-      document.documentElement.style.setProperty('--button-color-hover', '#e4c200')
-    });
+      .then((response) => {
+        setMetrics(response.metrics);
+        setResetFlag(response.reset_flag);
+        setLoading(false);
+      })
+      .catch(() => {
+        setMetrics(
+          METRICS_MOCK.metrics.filter((item) =>
+            item.title.toLocaleLowerCase().startsWith(searchValue.toLocaleLowerCase())
+          )
+        );
+        setLoading(false);
+      });
   };
-  
 
   const handleCardClick = (id: number) => {
     navigate(`/metrics/${id}`);
   };
 
   const handleResetClick = () => {
+    dispatch(resetFilter());
+    dispatch(resetSearchQuery());
     setLoading(true);
     getAllMetrics()
-    .then((response) => {
-      setMetrics(response.metrics);
-      // setCnt(response.metrics_count);
-      // setId(response.draft_calculation_id);
-      setFlag(response.reset_flag);
-      setLoading(false);
-    })
-    .catch(() => { 
-      setMetrics(
-        METRICS_MOCK.metrics
-      );
-      setLoading(false);
-    })
+      .then((response) => {
+        setMetrics(response.metrics);
+        setResetFlag(response.reset_flag);
+        setLoading(false);
+      })
+      .catch(() => {
+        setMetrics(METRICS_MOCK.metrics);
+        setLoading(false);
+      });
   };
 
   return (
@@ -93,60 +83,35 @@ const MetricsListPage: FC = () => {
         { label: ROUTE_LABELS.METRICS, path: ROUTES.METRICS },
       ]}
     >
-      <div className="container">  
+      <div className="container">
         <div className="underHead">
-          <div className="searchForm">
-            <InputField
-              value={searchValue}
-              setValue={(value) => setSearchValue(value)}
-              loading={loading}
-              onSubmit={handleSearch}
-              placeholder="Название метрики:"
-            /> 
-            {reset_flag && (<img
-              src="http://localhost:9000/items/reset.png" 
-              style={{ width: "35px", cursor: "pointer", position: "relative", zIndex: 1 }}
-              onClick={handleResetClick}
-            />)}
-          </div>
-          {/* <div className="cartWithNum">
-              <div className="metricsNum">{cnt_metrics}</div>
-                <img
-                  src="http://localhost:9000/items/shopping-cart.png"
-                  style={{ height: "35px" }}
-                />
-            </div> */}
+          <MetricFilter
+            value={searchValue} 
+            loading={loading}
+            setValue={(newValue) => dispatch(setSearchQuery(newValue))}
+            onSubmit={handleSearch}
+            onReset={handleResetClick}
+            resetFlag={resetFlag}
+          />
         </div>
 
-        {loading && (
-          <div className="loadingBg">
-            <Spinner animation="border" />
-          </div>
-        )}
-        <Row style={{paddingLeft: '9%'}}>
-        {!loading && (
-          (!metrics.length || metrics.length === 0) ? (
-            <div className="emptyList">
-              К сожалению, пока ничего не найдено
-            </div>
-          ) : (
-            metrics.map((metric) => (
-              <Col key={metric.metric_id} xs={4} md={4} lg={4}>
-                <MetricCard
-                  key={metric.metric_id}
-                  title={metric.title}
-                  picture_url={metric.picture_url}
-                  imageClickHandler={() => handleCardClick(metric.metric_id)}
-                />
-              </Col>
-            ))
-          )
-        )}
-      </Row>
+        <MetricsList
+          metrics={metrics}
+          loading={loading}
+          onCardClick={handleCardClick}
+          searchQuery={searchValue} 
+        />
       </div>
     </BasePage>
   );
 };
 
 export default MetricsListPage;
+
+
+
+
+
+
+
 
