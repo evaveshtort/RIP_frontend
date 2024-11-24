@@ -16,7 +16,7 @@ export const BreadCrumbs: FC<IBreadCrumbsProps> = ({ crumbs }) => {
       {crumbs.map((crumb, index) => (
         <span key={index}>
           {crumb.path ? (
-            <Link style = {{color: '#FFF'}} to={crumb.path}>{crumb.label}</Link>
+            <Link style = {{color: 'grey', fontFamily: "monospace"}} to={crumb.path}>{crumb.label}</Link>
           ) : (
             <span>{crumb.label}</span>
           )}

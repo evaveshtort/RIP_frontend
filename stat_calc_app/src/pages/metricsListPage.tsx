@@ -8,13 +8,14 @@ import { useNavigate } from "react-router-dom";
 import BasePage from "./BasePage";
 import { ROUTES, ROUTE_LABELS } from "../../Routes.tsx";
 import { METRICS_MOCK } from "../modules/mock";
+import '../components/InputField.css';
 
 const MetricsListPage: FC = () => {
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [metrics, setMetrics] = useState<Metric[]>([]);
-  const [cnt_metrics, setCnt] = useState<number>(0);
-  const [calculation_id, setId] = useState<number>(0);
+  // const [cnt_metrics, setCnt] = useState<number>(0);
+  // const [calculation_id, setId] = useState<number>(0);
   const [reset_flag, setFlag] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -23,16 +24,18 @@ const MetricsListPage: FC = () => {
     getAllMetrics()
     .then((response) => {
       setMetrics(response.metrics);
-      setCnt(response.metrics_count);
-      setId(response.draft_calculation_id);
+      // setCnt(response.metrics_count);
+      // setId(response.draft_calculation_id);
       setFlag(response.reset_flag);
       setLoading(false);
+      document.documentElement.style.setProperty('--button-color-hover', '#a0ed6f')
     })
     .catch(() => { 
       setMetrics(
         METRICS_MOCK.metrics
       );
       setLoading(false);
+      document.documentElement.style.setProperty('--button-color-hover', '#a0ed6f')
     });
   }, []);
 
@@ -41,10 +44,11 @@ const MetricsListPage: FC = () => {
     getMetricByName(searchValue)
     .then((response) => {
       setMetrics(response.metrics);
-      setCnt(response.metrics_count);
-      setId(response.draft_calculation_id);
+      // setCnt(response.metrics_count);
+      // setId(response.draft_calculation_id);
       setFlag(response.reset_flag);
       setLoading(false);
+      document.documentElement.style.setProperty('--button-color-hover', '#e4c200')
     })
     .catch(() => {
       setMetrics(
@@ -55,6 +59,7 @@ const MetricsListPage: FC = () => {
         )
       );
       setLoading(false);
+      document.documentElement.style.setProperty('--button-color-hover', '#e4c200')
     });
   };
   
@@ -64,7 +69,21 @@ const MetricsListPage: FC = () => {
   };
 
   const handleResetClick = () => {
-    window.location.reload();
+    setLoading(true);
+    getAllMetrics()
+    .then((response) => {
+      setMetrics(response.metrics);
+      // setCnt(response.metrics_count);
+      // setId(response.draft_calculation_id);
+      setFlag(response.reset_flag);
+      setLoading(false);
+    })
+    .catch(() => { 
+      setMetrics(
+        METRICS_MOCK.metrics
+      );
+      setLoading(false);
+    })
   };
 
   return (
@@ -86,7 +105,7 @@ const MetricsListPage: FC = () => {
             /> 
             {reset_flag && (<img
               src="http://localhost:9000/items/reset.png" 
-              style={{ width: "50px", cursor: "pointer", position: "relative", zIndex: 1 }}
+              style={{ width: "35px", cursor: "pointer", position: "relative", zIndex: 1 }}
               onClick={handleResetClick}
             />)}
           </div>

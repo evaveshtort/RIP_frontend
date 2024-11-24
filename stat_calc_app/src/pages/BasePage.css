@@ -26,6 +26,8 @@ body {
 .crumbs {
   font-size: large;
   padding-left: 12px;
+  color: grey;
+  font-family: monospace;
 }
 
 .mainLink {

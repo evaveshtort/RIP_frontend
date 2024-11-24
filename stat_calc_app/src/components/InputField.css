@@ -1,3 +1,7 @@
+:root {
+    --button-color-hover: gray;
+}
+
 .inputField {
     display: flex;
     padding-left: 15px;
@@ -32,5 +36,5 @@
 }
 
 .inputField > button:hover {
-    background-color: #e4c200;
+    background-color: var(--button-color-hover);
   }

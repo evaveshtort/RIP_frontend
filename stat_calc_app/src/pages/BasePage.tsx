@@ -22,18 +22,16 @@ const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
         onMouseEnter={(e) => e.preventDefault()} >
           Statistician
         </Link>
-        <div className="crumbs">
-          <BreadCrumbs crumbs={crumbs} />
-        </div>
 
         <Navbar bg="none" expand="lg">
-        <Container>
-            <Nav className="navbar">
-              <Nav.Link href={ROUTES.METRICS}>Метрики</Nav.Link>
-              {/* <Nav.Link href="#ссылканарасчеты">Расчеты</Nav.Link> */}
-            </Nav>
-        </Container>
+          <Nav className="navbar">
+            <Nav.Link href={ROUTES.METRICS}>Метрики</Nav.Link>
+            {/* <Nav.Link href="#ссылканарасчеты">Расчеты</Nav.Link> */}
+          </Nav>
       </Navbar>
+      </div>
+      <div className="crumbs">
+          <BreadCrumbs crumbs={crumbs} />
       </div>
       
       <div className="body">{children}</div>
