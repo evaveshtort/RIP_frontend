@@ -12,13 +12,13 @@ export interface Metric {
   }
 
   export const getAllMetrics = async (): Promise<MetricResult> => {
-    return fetch(`/api/metrics/`).then(
+    return fetch(`http://localhost:8000/metrics/`).then(
       (response) => response.json()
     );
   };
   
   export const getMetricByName = async (name = ""): Promise<MetricResult> => {
-    return fetch(`/api/metrics/?metricName=${name}`).then(
+    return fetch(`http://localhost:8000/metrics/?metricName=${name}`).then(
       (response) => response.json()
     );
   };

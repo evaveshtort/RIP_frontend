@@ -66,6 +66,12 @@
     background-color: transparent;
     border: none;
   }
+
+  button.btn-primary.card-link:active {
+    color: #e4c200;
+    background-color: transparent;
+    border: none;
+  }
   
   .cardImage {
     width: 100%;
