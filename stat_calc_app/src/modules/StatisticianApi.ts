@@ -26,7 +26,7 @@ export interface Metric {
   export const getMetricById = async (
     id: number | string
   ): Promise<Metric> => {
-    return fetch(`/api/metrics/${id}/`).then(
+    return fetch(`http://localhost:8000/metrics/${id}/`).then(
       (response) => response.json()
     );
   };

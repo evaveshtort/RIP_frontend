@@ -10,3 +10,12 @@ root.render(
     <App />
   </Provider>
 );
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker
+      .register("/statistician-frontend/serviceWorker.js")
+      .then(res => console.log("service worker registered", res))
+      .catch(err => console.log("service worker not registered", err))
+  })
+}
