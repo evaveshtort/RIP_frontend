@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { BreadCrumbs } from "../components/BreadCrumbs";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./BasePage.css";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -24,7 +24,7 @@ const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
 
         <Navbar bg="none" expand="lg">
           <Nav className="navbar">
-            <Nav.Link href={ROUTES.METRICS}>Метрики</Nav.Link>
+            <Nav.Link as={NavLink} to={ROUTES.METRICS}>Метрики</Nav.Link>
             {/* <Nav.Link href="#ссылканарасчеты">Расчеты</Nav.Link> */}
           </Nav>
       </Navbar>
