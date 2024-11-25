@@ -6,7 +6,7 @@ import { ROUTES } from "../Routes";
 
 function App() {
     return (
-      <BrowserRouter>
+      <BrowserRouter basename="/statistician-frontend">
         <Routes>
           <Route path={ROUTES.HOME} index element ={<HomePage />}/>
           <Route path={ROUTES.METRICS} index element={<MetricsListPage />}/>

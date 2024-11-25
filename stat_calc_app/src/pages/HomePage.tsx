@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { ROUTES } from "../../Routes.tsx";
-import { Carousel, Col, Row } from "react-bootstrap";
+import { Carousel, Col } from "react-bootstrap";
 import "./HomePage.css"
 import BasePage from "./BasePage";
 

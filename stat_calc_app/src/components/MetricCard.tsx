@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./MetricCard.css";
 import image from "./DefaultImage.png";
 
@@ -27,8 +28,12 @@ export const MetricCard: FC<ICardProps> = ({
         {title}
       </div>
     </div>
-    <a href="#" onClick={imageClickHandler} className="card-link">
+    <Link 
+      to="/" 
+      className="card-link"
+      onClick={imageClickHandler}
+    >
       Узнать больше &#8594;
-    </a>
+    </Link>
   </Card>
 );
