@@ -52,6 +52,7 @@ const MetricsListPage: FC = () => {
             item.title.toLocaleLowerCase().startsWith(searchValue.toLocaleLowerCase())
           )
         );
+        setResetFlag(true);
         setLoading(false);
       });
   };
@@ -73,6 +74,7 @@ const MetricsListPage: FC = () => {
       .catch(() => {
         setMetrics(METRICS_MOCK.metrics);
         setLoading(false);
+        setResetFlag(false);
       });
   };
 

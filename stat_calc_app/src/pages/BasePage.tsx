@@ -24,7 +24,7 @@ const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
 
         <Navbar bg="none" expand="lg">
           <Nav className="navbar">
-            <Nav.Link as={NavLink} to={ROUTES.METRICS}>Метрики</Nav.Link>
+            <Nav.Link as={NavLink} to={ROUTES.METRICS} className="nav-link">Метрики</Nav.Link>
             {/* <Nav.Link href="#ссылканарасчеты">Расчеты</Nav.Link> */}
           </Nav>
       </Navbar>
