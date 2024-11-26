@@ -16,12 +16,13 @@ export const MetricCard: FC<ICardProps> = ({
   imageClickHandler,
 }) => (
   <Card className="flex_container_card">
+    <div className="card_cont">
     <div className="card_container">
       <img
         className="cardImage"
         src={picture_url || image}
         alt="card"
-        style={{width:"70%"}}
+        style={{width:"60%"}}
       />
       <div className="card-title">
         {title}
@@ -33,5 +34,6 @@ export const MetricCard: FC<ICardProps> = ({
     >
       Узнать больше &#8594;
     </Button>
+    </div>
   </Card>
 );

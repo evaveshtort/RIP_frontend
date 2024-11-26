@@ -85,7 +85,7 @@ const MetricsListPage: FC = () => {
         { label: ROUTE_LABELS.METRICS, path: ROUTES.METRICS },
       ]}
     >
-      <div className="container">
+      {/* <div className="container" style={{ paddingLeft: "0" }}> */}
         <div className="underHead">
           <MetricFilter
             value={searchValue} 
@@ -103,7 +103,7 @@ const MetricsListPage: FC = () => {
           onCardClick={handleCardClick}
           searchQuery={searchValue} 
         />
-      </div>
+      {/* </div> */}
     </BasePage>
   );
 };
