@@ -26,6 +26,7 @@
 .flex_container_card {
     display: flex;
     flex-wrap: wrap;
+    flex: '1 1 300px';
     flex-direction: column;
     justify-content: space-between;
     transition: 0.3s;
@@ -33,6 +34,7 @@
     border-radius: 5px;
     width: 100%;
     border: none;
+    margin-left: 20%;
   }
 
   .card_container {

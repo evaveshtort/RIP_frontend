@@ -1,7 +1,7 @@
 {
 "name": "Statistician",
 "short_name": "Statistician",
-"start_url": "./",
+"start_url": "/statistician-frontend/",
 "display": "standalone",
 "background_color": "#fefefe",
 "theme_color": "#910ed8",

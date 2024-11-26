@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { resetFilter } from '../features/metricsFilterSlice';
 import { RootState } from '../app/store';
 import { useEffect } from "react";
+import './MetricsList.css';
 
 interface MetricsListProps {
   metrics: Metric[];
@@ -39,12 +40,13 @@ const MetricsList: React.FC<MetricsListProps> = ({ metrics, loading, onCardClick
     }
   
     return (
-      <Row style={{ paddingLeft: '9%' }}>
+      <div className='cards'>
+      <Row className='justify-content-start align-items-stretch'>
         {filteredMetrics.length === 0 ? (
           <div className="emptyList">К сожалению, пока ничего не найдено</div>
         ) : (
           filteredMetrics.map((metric) => (
-            <Col key={metric.metric_id} xs={4} md={4} lg={4}>
+            <Col key={metric.metric_id} xs={12} md={6} lg={4}>
               <MetricCard
                 key={metric.metric_id}
                 title={metric.title}
@@ -55,6 +57,7 @@ const MetricsList: React.FC<MetricsListProps> = ({ metrics, loading, onCardClick
           ))
         )}
       </Row>
+      </div>
     );
   };
 
