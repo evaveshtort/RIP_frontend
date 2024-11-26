@@ -1,19 +1,19 @@
 {
-    "name": "Statistician",
-    "short_name": "Statistician",
-    "start_url": "/statistician-frontend/",
-    "display": "standalone",
-    "background_color": "#fefefe",
-    "theme_color": "#910ed8",
-    "orientation": "portrait-primary",
-    "icons": [
-      {
-        "src": "/statistician-frontend/icon2.png",
-        "type": "image/png", "sizes": "192x192"
-      },
-      {
-        "src": "/statistician-frontend/icon.png",
-        "type": "image/png", "sizes": "512x512"
-      }
-    ]
-  }
+"name": "Statistician",
+"short_name": "Statistician",
+"start_url": "./",
+"display": "standalone",
+"background_color": "#fefefe",
+"theme_color": "#910ed8",
+"orientation": "portrait-primary",
+"icons": [
+    {
+    "src": "./icon2.png",
+    "type": "image/png", "sizes": "192x192"
+    },
+    {
+    "src": "./icon.png",
+    "type": "image/png", "sizes": "512x512"
+    }
+]
+}
