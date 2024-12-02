@@ -1,3 +1,4 @@
 .cards {
     justify-content: center;
+    overflow: hidden;
 }

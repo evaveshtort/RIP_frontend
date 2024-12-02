@@ -2,10 +2,8 @@ import React from 'react';
 import { Col, Row, Spinner } from 'react-bootstrap';
 import { Metric } from '../modules/StatisticianApi';
 import { MetricCard } from './MetricCard';
-import { useSelector, useDispatch } from 'react-redux';
-import { resetFilter } from '../features/metricsFilterSlice';
+import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
-import { useEffect } from "react";
 import './MetricsList.css';
 
 interface MetricsListProps {
@@ -17,19 +15,12 @@ interface MetricsListProps {
 
 const MetricsList: React.FC<MetricsListProps> = ({ metrics, loading, onCardClick }) => {
     const { searchQuery, shouldFilter } = useSelector((state: RootState) => state.metricsFilter);
-    const dispatch = useDispatch();
   
     const filteredMetrics = shouldFilter
       ? metrics.filter((metric) =>
           metric.title.toLowerCase().includes(searchQuery.toLowerCase())
         )
       : metrics;
-  
-    useEffect(() => {
-      if (shouldFilter) {
-        dispatch(resetFilter());
-      }
-    }, [shouldFilter, dispatch]);
   
     if (loading) {
       return (
@@ -46,7 +37,7 @@ const MetricsList: React.FC<MetricsListProps> = ({ metrics, loading, onCardClick
           <div className="emptyList">К сожалению, пока ничего не найдено</div>
         ) : (
           filteredMetrics.map((metric) => (
-            <Col key={metric.metric_id} xs={12} md={6} lg={4}>
+            <Col key={metric.metric_id} xs={12} md={6} lg={4} style={{paddingRight: "0", maxWidth: "100%"}}>
               <MetricCard
                 key={metric.metric_id}
                 title={metric.title}

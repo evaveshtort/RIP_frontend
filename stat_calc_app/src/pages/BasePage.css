@@ -1,8 +1,18 @@
+:root {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
 body::-webkit-scrollbar {
   display: none;
 }
 
 body {
+  max-width: 100%;
   background-color: #fefefe;
 }
   
@@ -18,9 +28,14 @@ body {
     position: sticky;
     padding: 0.5%;
     padding-left: 1.5%;
+    padding-right: 0;
     top: 0;
     width: 100%;
     z-index: 2;
+}
+
+.upper::-webkit-scrollbar {
+  display: none;
 }
 
 .crumbs {
@@ -46,6 +61,10 @@ body {
   padding: 10px 0;
 }
 
+.navbarr {
+  display: flex;
+}
+
 .navbar-nav .nav-link {
   color: #ffffff;
   font-family: monospace;
@@ -62,6 +81,88 @@ body {
 
 .navbar-nav .nav-link:hover {
   color: #e4c200;
+}
+
+.nav__mobile-wrapper {
+  display: none; 
+  top: 13px;
+  right: 10px;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+  position: relative;
+}
+
+.nav__mobile-target {
+  height: 3px;
+  border-radius: 2px;
+  width: 100%;
+  background-color: #e4c200;
+  position: relative;
+  transition: all 0.2s linear;
+}
+
+.nav__mobile-target::after,
+.nav__mobile-target::before {
+  content: '';
+  position: absolute;
+  height: 3px;
+  border-radius: 2px;
+  width: 100%;
+  background-color: #e4c200;
+}
+
+.nav__mobile-target::after {
+  top: -7px;
+}
+
+.nav__mobile-target::before {
+  bottom: -7px;
+}
+
+/* Активное бургерное меню */
+.nav__mobile-wrapper.active .nav__mobile-target {
+  transform: rotate(45deg);
+  background-color: #ffffff;
+}
+
+.nav__mobile-wrapper.active .nav__mobile-target::after {
+  display: none;
+}
+
+.nav__mobile-wrapper.active .nav__mobile-target::before {
+  transform: rotate(-90deg);
+  top: 0;
+  background-color: #ffffff;
+}
+
+.nav__mobile-menu {
+  display: none; 
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: #e4c200;
+  padding: 20px;
+  min-width: 150px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.nav__mobile-wrapper.active .nav__mobile-menu {
+  display: flex; /* Появляется, когда активно */
+}
+
+/* Медиазапросы */
+@media (max-width: 545px) {
+  .navbarr {
+    display: none; /* Скрываем стандартный navbar */
+  }
+
+  .nav__mobile-wrapper {
+    display: flex; /* Показываем бургерное меню */
+  }
 }
 
 /* .page-title {

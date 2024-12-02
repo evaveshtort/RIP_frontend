@@ -14,16 +14,15 @@
   }
 } */
 
+:root {
+  overflow-x: hidden;
+  margin: 0;
+}
+
 h1 {
   /* color:black; */
   font-family: monospace;
   font-weight: lighter;
-}
-
-.container {
-  padding: 20px;
-  padding-right: 0;
-  padding-top: 5px;
 }
 
 .loadingBg {

@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Card, Button } from "react-bootstrap";
 import "./MetricCard.css";
 import image from "./DefaultImage.png";
+import { dest_minio } from "../target_config"
 
 interface ICardProps {
   key: number;
@@ -20,9 +21,9 @@ export const MetricCard: FC<ICardProps> = ({
     <div className="card_container">
       <img
         className="cardImage"
-        src={picture_url || image}
+        src={picture_url.replace("http://localhost:9000", dest_minio) || image}
         alt="card"
-        style={{width:"60%"}}
+        style={{width:"70%"}}
       />
       <div className="card-title">
         {title}

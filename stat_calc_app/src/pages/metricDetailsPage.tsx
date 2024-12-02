@@ -7,6 +7,7 @@ import BasePage from "./BasePage";
 import { ROUTES, ROUTE_LABELS } from "../../Routes.tsx";
 import { METRICS_MOCK } from "../modules/mock";
 import image from "../components/DefaultImage.png";
+import { dest_minio } from "../target_config"
 
 export const MetricDetailsPage: FC = () => {
   const [pageData, setPageDdata] = useState<Metric>();
@@ -38,7 +39,7 @@ export const MetricDetailsPage: FC = () => {
                 <div className="metricTitle">{pageData.title}</div>
                 <div className="infoSpace">
                   <Image
-                    src={pageData.picture_url || image}
+                    src={pageData.picture_url.replace("http://localhost:9000", dest_minio) || image}
                     alt="card"
                     height={200}
                     style={{ marginRight: "20px" }}

@@ -39,4 +39,11 @@
     align-items: center;
     min-height: 200px;
   }
+
+  @media (max-width: 460px) {
+    .infoSpace {
+        flex-direction: column;
+        gap: 20px 0
+    }
+  }
   

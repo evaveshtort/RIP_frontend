@@ -15,7 +15,6 @@ import '../components/InputField.css';
 const MetricsListPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [metrics, setMetrics] = useState<Metric[]>([]);
-  const [resetFlag, setResetFlag] = useState<boolean>(false);
   const searchValue = useSelector((state: RootState) => state.metricsFilter.searchQuery); 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +25,6 @@ const MetricsListPage: FC = () => {
     getAllMetrics()
       .then((response) => {
         setMetrics(response.metrics);
-        setResetFlag(response.reset_flag);
         setLoading(false);
       })
       .catch(() => {
@@ -43,7 +41,6 @@ const MetricsListPage: FC = () => {
     getMetricByName(searchValue)
       .then((response) => {
         setMetrics(response.metrics);
-        setResetFlag(response.reset_flag);
         setLoading(false);
       })
       .catch(() => {
@@ -52,7 +49,6 @@ const MetricsListPage: FC = () => {
             item.title.toLocaleLowerCase().startsWith(searchValue.toLocaleLowerCase())
           )
         );
-        setResetFlag(true);
         setLoading(false);
       });
   };
@@ -68,13 +64,11 @@ const MetricsListPage: FC = () => {
     getAllMetrics()
       .then((response) => {
         setMetrics(response.metrics);
-        setResetFlag(response.reset_flag);
         setLoading(false);
       })
       .catch(() => {
         setMetrics(METRICS_MOCK.metrics);
         setLoading(false);
-        setResetFlag(false);
       });
   };
 
@@ -93,7 +87,6 @@ const MetricsListPage: FC = () => {
             setValue={(newValue) => dispatch(setSearchQuery(newValue))}
             onSubmit={handleSearch}
             onReset={handleResetClick}
-            resetFlag={resetFlag}
           />
         </div>
 

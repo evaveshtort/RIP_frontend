@@ -3,7 +3,6 @@ import { MetricResult } from "./StatisticianApi";
 export const METRICS_MOCK: MetricResult = {
   draft_calculation_id: -1, 
   metrics_count: 0,
-  reset_flag: false,
   metrics: [
     {
         metric_id: 1,

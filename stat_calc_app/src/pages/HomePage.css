@@ -1,35 +1,22 @@
-#root {
-    min-height: 100vh;  /* Убедитесь, что root растягивается на всю высоту экрана */
+:root {
     display: flex;
     flex-direction: column;
     width: 100%;
+    overflow-x: hidden;
     background-color: #fefefe;
-  }
-
-  .seeAll {
-    background-color:#910ed8;
-    height: 55px;
-    border-width: 0;
-    width: 150px;
-    color: #ffffff;
-    border-radius: 30px;
-    font-family: monospace;
-    font-size: xx-large;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .seeAll:hover {
-    background-color:#e4c200;
+    box-sizing: border-box;
   }
 
   .container {
-    margin-left: 30px;
+    padding-top: 2%;
+    margin: 0;
+    padding-left: 2%;
+    padding-right: 2%;
   }
 
   .carouselItem {
     max-width: 100%;
+    padding: 0;
   }
 
   h3{

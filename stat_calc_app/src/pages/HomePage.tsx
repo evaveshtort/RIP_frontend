@@ -3,6 +3,13 @@ import { ROUTES } from "../../Routes.tsx";
 import { Carousel, Col } from "react-bootstrap";
 import "./HomePage.css"
 import BasePage from "./BasePage";
+import frame1 from "../components/frame1.png";
+import frame2 from "../components/frame2.png";
+import frame3 from "../components/frame3.png";
+import frame4 from "../components/frame4.png";
+import frame5 from "../components/frame5.png";
+import frame6 from "../components/frame6.png";
+import frame7 from "../components/frame7.png";
 
 export const HomePage: FC = () => {
   return (
@@ -21,43 +28,43 @@ export const HomePage: FC = () => {
               <Carousel.Item>
                 <img
                   className="carouselItem"
-                  src="http://localhost:9000/items/frame1.png"
+                  src={frame1}
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <img
                   className="carouselItem"
-                  src="http://localhost:9000/items/frame2.png"
+                  src={frame2}
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <img
                   className="carouselItem"
-                  src="http://localhost:9000/items/frame3.png"
+                  src={frame3}
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <img
                   className="carouselItem"
-                  src="http://localhost:9000/items/frame4.png"
+                  src={frame4}
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <img
                   className="carouselItem"
-                  src="http://localhost:9000/items/frame5.png"
+                  src={frame5}
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <img
                   className="carouselItem"
-                  src="http://localhost:9000/items/frame6.png"
+                  src={frame6}
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <img
                   className="carouselItem"
-                  src="http://localhost:9000/items/frame7.png"
+                  src={frame7}
                 />
               </Carousel.Item>
           </Carousel>
