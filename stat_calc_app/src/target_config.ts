@@ -1,4 +1,4 @@
-const target_abs = false
+const target_abs = true
 const tauri_app = false
 const local_ip = "192.168.179.64"
 
