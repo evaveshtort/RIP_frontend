@@ -79,7 +79,34 @@
     border: none;
   }
 
+  .card-link-add {
+    color: #808080;
+    padding-top: 0;
+    font-size: x-large;
+    font-family: monospace;
+    font-weight: lighter;
+    background-color: transparent;
+    border: none;
+    text-align: start;
+    padding-left: 0px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .card-link-add:hover {
+    color: #e4c200;
+    background-color: transparent;
+    border: none;
+  }
+
   button.btn-primary.card-link:active {
+    color: #e4c200;
+    background-color: transparent;
+    border: none;
+  }
+
+  button.btn-primary.card-link-add:active {
     color: #e4c200;
     background-color: transparent;
     border: none;

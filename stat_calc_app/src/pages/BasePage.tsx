@@ -1,12 +1,19 @@
 import React, { ReactNode } from "react";
 import { BreadCrumbs } from "../components/BreadCrumbs";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./BasePage.css";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { ROUTES } from "../../Routes.tsx";
-import image from "../../public/icon.png";
+import image from "/icon.png";
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../app/store';
+import { dest_api } from "../target_config"
+import axios from 'axios';
+import { resetState as resetAuthState } from '../features/authSlice';
+import { resetState as resetMetricsFilterState } from '../features/metricsFilterSlice';
+import { resetState as resetCalcState } from '../features/calcSlice';
 
 // Определение интерфейса для пропсов компонента
 interface IBasePageProps {
@@ -16,7 +23,23 @@ interface IBasePageProps {
 
 const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  console.log('Render navbar', menuOpen);
+  const { isLoggedIn, email } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post( dest_api + '/users/logout/', {});
+
+      if (response.status = 200) {
+        dispatch(resetAuthState()); 
+        dispatch(resetMetricsFilterState()); 
+        dispatch(resetCalcState()); 
+        navigate(ROUTES.METRICS)
+      }
+    } catch (error: any) {
+      console.log('Ошибка логаута');
+    }
+  };
   return (
     <div className="base-page">
       <div className="upper">
@@ -29,7 +52,15 @@ const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
         <Navbar expand="lg">
           <Nav className="navbarr">
             <Nav.Link as={NavLink} to={ROUTES.METRICS} className="nav-link">Метрики</Nav.Link>
-            {/* <Nav.Link href="#ссылканарасчеты">Расчеты</Nav.Link> */}
+            {!isLoggedIn ? (
+              <Nav.Link as={NavLink} to={ROUTES.LOGIN} className="nav-link">Войти</Nav.Link>
+            ) : (
+              <>
+                <Nav.Link as={NavLink} to={ROUTES.CALCS} className="nav-link">Вычисления</Nav.Link>
+                <Nav.Link as={NavLink} to={ROUTES.ACCOUNT} className="nav-link">Личный кабинет {email.split('@')[0]}</Nav.Link>
+                <Nav.Link onClick={handleLogout} className="nav-link">Выйти</Nav.Link>
+              </>
+      )}
           </Nav>
           <div
             className={`nav__mobile-wrapper ${menuOpen ? 'active' : ''}`}
@@ -40,6 +71,19 @@ const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
               <Nav.Link as={NavLink} to={ROUTES.METRICS} className="nav-link">
                 Метрики
               </Nav.Link>
+              {!isLoggedIn ? (
+                      <Nav.Link as={NavLink} to={ROUTES.LOGIN} className="nav-link">
+                      Войти
+                    </Nav.Link>
+                    ) : (
+                      <>
+                        <Nav.Link as={NavLink} to={ROUTES.CALCS} className="nav-link">Вычисления</Nav.Link>
+                        <Nav.Link as={NavLink} to={ROUTES.ACCOUNT} className="nav-link">
+                          Личный кабинет {email.split('@')[0]}
+                        </Nav.Link>
+                        <Nav.Link onClick={handleLogout} className="nav-link">Выйти</Nav.Link>
+                      </>
+              )}
             </div>
           </div>
       </Navbar>

@@ -1,5 +1,5 @@
-const target_abs = true
-const tauri_app = true
+const target_abs = false
+const tauri_app = false
 const local_ip = "192.168.179.64"
 
 export const api_proxy_addr = "http://" + local_ip + ":8000"

@@ -11,11 +11,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSearchQuery, triggerFilter, resetFilter, resetSearchQuery} from "../features/metricsFilterSlice";
 import { RootState } from "../app/store";
 import '../components/InputField.css';
+import { cntMetricsSet, draftCalcIdSet, draftCalcSet } from "../features/calcSlice.ts";
+import { dest_minio, dest_api } from "../target_config"
+import axios from 'axios';
 
 const MetricsListPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [metrics, setMetrics] = useState<Metric[]>([]);
+  const [error, setError] = useState('');
   const searchValue = useSelector((state: RootState) => state.metricsFilter.searchQuery); 
+  const cntMetrics = useSelector((state: RootState) => state.calc.cntMetrics);
+  const draftCalc = useSelector((state: RootState) => state.calc.draftCalc);
+  const draftCalcId = useSelector((state: RootState) => state.calc.draftCalcId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,8 +31,14 @@ const MetricsListPage: FC = () => {
     document.documentElement.style.setProperty('--button-color-hover', '#a0ed6f');
     getAllMetrics()
       .then((response) => {
+        if (response.draft_calculation_id != -1) {
+          dispatch(draftCalcSet())
+          dispatch(draftCalcIdSet(response.draft_calculation_id.toString()))
+          dispatch(cntMetricsSet(response.metrics_count))
+        }
         setMetrics(response.metrics);
         setLoading(false);
+        console.log(response)
       })
       .catch(() => {
         setMetrics(METRICS_MOCK.metrics);
@@ -34,7 +47,6 @@ const MetricsListPage: FC = () => {
   }, []);
 
   const handleSearch = () => {
-    console.log("handleSearch вызван");
     setLoading(true);
     document.documentElement.style.setProperty('--button-color-hover', '#e4c200');
     dispatch(triggerFilter());
@@ -53,8 +65,30 @@ const MetricsListPage: FC = () => {
       });
   };
 
+  const handleCalculationsClick = (calc_id: string) => {
+    navigate(`/draft_calculation/${calc_id}`)
+  };
+
   const handleCardClick = (id: number) => {
     navigate(`/metrics/${id}`);
+  };
+
+  const handleAddClick = async (id:number) => {
+    try{
+      const response = await axios.post( dest_api + '/metrics/' + id + '/add_to_calculation/')
+      if (response.status = 200) {
+        getAllMetrics()
+        .then((response) => {
+          dispatch(draftCalcSet())
+          dispatch(draftCalcIdSet(response.draft_calculation_id.toString()))
+          dispatch(cntMetricsSet(response.metrics_count))
+        }
+      )
+      }
+    }
+    catch (err) {
+      setError('Ошибка добавления метрики');
+    }
   };
 
   const handleResetClick = () => {
@@ -88,12 +122,21 @@ const MetricsListPage: FC = () => {
             onSubmit={handleSearch}
             onReset={handleResetClick}
           />
+          {draftCalc ? (<div className="cartWithNum">
+              <div className="metricsNum">{cntMetrics}</div>
+                <img
+                  src={dest_minio + "/items/shopping-cart.png"}
+                  style={{ height: "35px" }}
+                  onClick={() => handleCalculationsClick(draftCalcId)}
+                />
+          </div>): (<></>)}
         </div>
 
         <MetricsList
           metrics={metrics}
           loading={loading}
           onCardClick={handleCardClick}
+          addClick={handleAddClick}
           searchQuery={searchValue} 
         />
       {/* </div> */}

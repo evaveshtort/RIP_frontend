@@ -10,10 +10,11 @@ interface MetricsListProps {
   metrics: Metric[];
   loading: boolean;
   onCardClick: (id: number) => void;
+  addClick: (id: number) => void;
   searchQuery: string;
 }
 
-const MetricsList: React.FC<MetricsListProps> = ({ metrics, loading, onCardClick }) => {
+const MetricsList: React.FC<MetricsListProps> = ({ metrics, loading, onCardClick, addClick }) => {
     const { searchQuery, shouldFilter } = useSelector((state: RootState) => state.metricsFilter);
   
     const filteredMetrics = shouldFilter
@@ -43,6 +44,7 @@ const MetricsList: React.FC<MetricsListProps> = ({ metrics, loading, onCardClick
                 title={metric.title}
                 picture_url={metric.picture_url}
                 imageClickHandler={() => onCardClick(metric.metric_id)}
+                addClickHandler={() => addClick(metric.metric_id)}
               />
             </Col>
           ))

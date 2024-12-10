@@ -63,6 +63,7 @@ body {
 
 .navbarr {
   display: flex;
+  flex-direction: row;
 }
 
 .navbar-nav .nav-link {

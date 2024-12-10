@@ -1,0 +1,26 @@
+.card-link-del {
+    color: #808080;
+    padding-top: 0;
+    font-size: x-large;
+    font-family: monospace;
+    font-weight: lighter;
+    background-color: transparent;
+    border: none;
+    text-align: start;
+    padding-left: 0px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .card-link-del:hover {
+    color: #e4c200;
+    background-color: transparent;
+    border: none;
+  }
+
+  button.btn-primary.card-link-del:active {
+    color: #e4c200;
+    background-color: transparent;
+    border: none;
+  }

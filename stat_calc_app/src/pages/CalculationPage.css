@@ -1,0 +1,44 @@
+.flex_container_cart {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .calcItem {
+    margin-left: 20px;
+  }
+  
+  .numberFrame {
+    width: 50px;
+    padding: 5px;
+  }
+  
+  .upper_calc_list {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .inputFrame {
+    flex: 1;
+    margin-right: 10px;
+    padding: 5px;
+  }
+  
+  .delBtn {
+    padding: 10px 20px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .delBtn:hover {
+    background-color: #c9302c;
+  }
+  
+  .calc_list {
+    display: flex;
+    flex-direction: column;
+  }
+  

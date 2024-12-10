@@ -25,11 +25,12 @@ const metricsFilterSlice = createSlice({
     },
     resetSearchQuery: (state) => {
       state.searchQuery = '';
-    }
+    },
+    resetState: () => initialState
   },
 });
 
-export const { setSearchQuery, triggerFilter, resetFilter, resetSearchQuery } = metricsFilterSlice.actions;
+export const { setSearchQuery, triggerFilter, resetFilter, resetSearchQuery, resetState } = metricsFilterSlice.actions;
 export default metricsFilterSlice.reducer;
 
 
