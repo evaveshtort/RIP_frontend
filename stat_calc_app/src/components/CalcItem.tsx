@@ -43,31 +43,39 @@ export const CalcItem: React.FC<CalcItemProps> = ({ id, pictureUrl, title, amoun
 
 
   return (
-    <div className="flex_container_cart">
-      <img src={pictureUrl.replace("http://localhost:9000", dest_minio)} alt="card" style={{ height: "150px" }} />
-      <div className="calcItem">
-        <h4>
-          <b><Link to={`/metrics/${id}`} className="card-title">{title}</Link></b>
-        </h4>
-        <div className="numberOfElems">
-          <p>Количество элементов для расчета:</p>
-          <input
-            className="numberFrame"
-            type="number"
-            defaultValue={amountOfData}
-            onChange={handleChange}
-          />
+    <div className="flex_container_calc">
+        <div className="imgTitle">
+          <img src={pictureUrl.replace("http://localhost:9000", dest_minio)} alt="card" style={{ height: "90%"}} />
+          
+          <h4>
+            <div className="calc-title">{title}</div>
+          </h4>
         </div>
-        <Link to={`/metrics/${id}`} className="card-link">
-          Узнать больше &#8594;
-        </Link>
-        <Button
-        className="card-link-del"
-        onClick={() => delClickHandler(calc_id, id)}
-        >
-        Удалить из вычисления &#8594;
-        </Button>
+        <div className="numbLinks">
+          <div>
+          <div className="numberOfElems">
+            <div className="customText">Количество элементов для расчета:</div>
+            <input
+              className="numberFrame"
+              type="number"
+              defaultValue={amountOfData}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="customText">Результат: будет доступен после завершения</div>
+          </div>
+          <div className="links">
+          <Link to={`/metrics/${id}`} className="calc-link">
+            Узнать больше &#8594;
+          </Link>
+          <Button
+          className="card-link-del"
+          onClick={() => delClickHandler(calc_id, id)}
+          >
+          Удалить из вычисления &#8594;
+          </Button>
+          </div>
+        </div>
       </div>
-    </div>
   );
 };

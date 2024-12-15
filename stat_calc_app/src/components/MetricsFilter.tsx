@@ -2,7 +2,7 @@ import React from "react";
 import InputField from "./InputField";
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
-import image from "../components/reset.png";
+import image from "../components/reset1.png";
 
 
 interface MetricFilterProps {

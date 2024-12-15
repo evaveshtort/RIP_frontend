@@ -9,6 +9,7 @@ import axios from 'axios';
 import { dest_api } from "../target_config";
 import { cntMetricsSet, resetState as resetCalcState } from '../features/calcSlice';
 import { useDispatch } from "react-redux";
+import {Tooltip as ReactTooltip } from 'react-tooltip';
 
 interface Metric {
   id: string;
@@ -18,10 +19,12 @@ interface Metric {
 }
 
 export const CalculationPage: React.FC = () => {
+  const Tooltip: typeof ReactTooltip = ReactTooltip;
   const { calc_id } = useParams();
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [calcData, setCalcData] = useState("");
+  const [withCalc, setWithCalc] = useState<boolean>(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -58,22 +61,44 @@ export const CalculationPage: React.FC = () => {
     }
   };
 
-  const handleChangeCalcData = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      try {
-        const response = await axios.put(
-          `${dest_api}/calculations/${calc_id}/update/`,
-          { data_for_calc: calcData }
-        );
-        if (response.status === 200) {
-          console.log("Данные обновлены");
+  const handleChangeCalcData = async () => {
+    try {
+      const response = await axios.put(
+        `${dest_api}/calculations/${calc_id}/update/`,
+        { data_for_calc: calcData }
+      );
+      if (response.status === 200) {
+        console.log("Данные обновлены");
+        if (calcData != "") {
+          setWithCalc(true)
         }
-      } catch (error) {
-        setError("Ошибка отправки данных");
-        console.error(error);
+        else {
+          setWithCalc(false)
+        }
       }
+    } catch (error) {
+      setError("Ошибка отправки данных");
+      console.error(error);
     }
   };
+
+  const handleSend = async () => {
+    try {
+      const response = await axios.put(
+        `${dest_api}/calculations/${calc_id}/update_status_user/`
+      );
+      if (response.status === 200) {
+        console.log("Заявка сформирована");
+        dispatch(resetCalcState())
+        navigate(`/metrics`)
+      }
+    } catch (error) {
+      setError("Ошибка формирования");
+      console.error(error);
+    }
+  };
+  
+  
   
 
   const fetchData = async (calc_id:string) => {
@@ -89,6 +114,13 @@ export const CalculationPage: React.FC = () => {
         console.log(metrics)
         setMetrics(metrics);
         setCalcData(response.data.data_for_calc);
+        console.log(response.data.data_for_calc)
+        if (response.data.data_for_calc && response.data.data_for_calc != "") {
+          setWithCalc(true)
+        }
+        else {
+          setWithCalc(false)
+        }
         if (metrics.length === 0) {
           dispatch(resetCalcState())
           navigate(`/metrics`);
@@ -110,7 +142,7 @@ export const CalculationPage: React.FC = () => {
   }, []);
 
   return (
-    <BasePage crumbs={[{ label: "", path: ROUTES.HOME },
+    <BasePage crumbs={[{ label: ROUTE_LABELS.HOME, path: ROUTES.HOME },
       { label: ROUTE_LABELS.CALC, path: ROUTES.CALC }]}>
       <div className="upper_calc_list">
         <div className="change_data">
@@ -119,13 +151,24 @@ export const CalculationPage: React.FC = () => {
             type="text"
             value={calcData}
             onChange={(e) => setCalcData(e.target.value)}
-            onKeyDown={handleChangeCalcData}
             placeholder="Введите данные для расчёта через пробел:"
+            data-tooltip-id="my-tooltip" 
+            data-tooltip-content="Данные для вычислений, вводить нужно через пробел"
+          />
+          <Tooltip 
+            id="my-tooltip" 
+            className="custom-tooltip" 
+            place="bottom" 
+            style={{ fontFamily: 'monospace', borderRadius: '20px', backgroundColor: '#910ed8'}} 
           />
         </div>
-        <button className="delBtn" onClick={() => handleDeleteCalculations(calc_id??'-1')}>
+        <div className="buttons">
+        <button className="customBtn" onClick={handleChangeCalcData}>Сохранить</button>
+        {withCalc ? (<button className="customBtn" onClick={handleSend}>Сформировать</button>):(<></>)}
+        <button className="customBtn" onClick={() => handleDeleteCalculations(calc_id??'-1')}>
           Удалить
         </button>
+        </div>
       </div>
 
       <div className="calc_list">

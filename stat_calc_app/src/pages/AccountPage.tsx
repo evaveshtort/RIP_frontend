@@ -42,7 +42,7 @@ const AccountPage = () => {
   };
 
   return (
-    <BasePage crumbs={[{ label: "", path: ROUTES.HOME },
+    <BasePage crumbs={[{ label: ROUTE_LABELS.HOME, path: ROUTES.HOME },
     { label: ROUTE_LABELS.ACCOUNT, path: ROUTES.ACCOUNT }]}>
     <div className="profile-page">
       <h2>Личный кабинет</h2>

@@ -34,7 +34,7 @@ const LoginPage: FC = () => {
   };
 
   return (
-    <BasePage crumbs={[{ label: "", path: ROUTES.HOME },
+    <BasePage crumbs={[{ label: ROUTE_LABELS.HOME, path: ROUTES.HOME },
     { label: ROUTE_LABELS.LOGIN, path: ROUTES.LOGIN }]}>
     <div className="login-container">
       <h2>Авторизация</h2>

@@ -109,7 +109,7 @@ const MetricsListPage: FC = () => {
   return (
     <BasePage
       crumbs={[
-        { label: "", path: ROUTES.HOME },
+        { label: ROUTE_LABELS.HOME, path: ROUTES.HOME },
         { label: ROUTE_LABELS.METRICS, path: ROUTES.METRICS },
       ]}
     >

@@ -1,7 +1,20 @@
+.calc-title {
+  text-decoration: none;
+  font-size:x-large;
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+.customText {
+  font-size:large;
+  font-family: monospace;
+  color: #808080;
+}
+
 .card-link-del {
     color: #808080;
     padding-top: 0;
-    font-size: x-large;
+    font-size: large;
     font-family: monospace;
     font-weight: lighter;
     background-color: transparent;
@@ -19,8 +32,79 @@
     border: none;
   }
 
+  .calc-link {
+    color: #910ed8;
+    padding-top: 0;
+    font-size: large;
+    font-family: monospace;
+    font-weight: lighter;
+    background-color: transparent;
+    border: none;
+    text-align: start;
+    padding-left: 0px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .calc-link:hover {
+    color: #e4c200;
+    background-color: transparent;
+    border: none;
+  }
+
   button.btn-primary.card-link-del:active {
     color: #e4c200;
     background-color: transparent;
     border: none;
+  }
+
+  .flex_container_calc {
+    display: flex;
+    width: 100%;
+    height: 100px;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  .numberOfElems {
+    display:flex;
+    align-items: center;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .imgTitle {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px
+  }
+
+  .numbLinks {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px
+  }
+
+  .numberFrame {
+    width: 8px;
+    max-width: 100%;
+    height: 20px;
+    border-radius: 20px;
+    border-color: #910ed8;
+    border-width: 0.1px;
+    font-family: monospace;
+    font-size: medium;
+    font-weight: lighter;
+    background-color: #fefefe;
+    color: #000000;
+    text-align: center;
   }

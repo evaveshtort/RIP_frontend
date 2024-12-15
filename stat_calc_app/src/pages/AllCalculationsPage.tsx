@@ -62,7 +62,7 @@ const AllCalculationsPage: React.FC = () => {
   }, []);
 
   return (
-    <BasePage crumbs={[{ label: "", path: ROUTES.HOME }, { label: ROUTE_LABELS.CALCS, path: ROUTES.CALCS }]}>
+    <BasePage crumbs={[{ label: ROUTE_LABELS.HOME, path: ROUTES.HOME }, { label: ROUTE_LABELS.CALCS, path: ROUTES.CALCS }]}>
       <div className="calculations-table-page">
         <h1>Список вычислений</h1>
         {error && <p className="error">{error}</p>}

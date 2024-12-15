@@ -1,6 +1,6 @@
-const target_abs = true
+const target_abs = false
 const tauri_app = false
-const local_ip = "192.168.179.64"
+const local_ip = "localhost"
 
 export const api_proxy_addr = "http://" + local_ip + ":8000"
 export const minio_proxy_addr = "http://" + local_ip + ":9000"
