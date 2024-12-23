@@ -1,0 +1,38 @@
+.calculation-card {
+    display: flex;
+    flex-direction: row;
+    margin-left: 70px;
+    margin-right: 70px;
+    margin-bottom: 10px;
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    align-items: center;
+}
+
+.calculation-card-rows-metrics {
+    display: flex;
+    flex-direction: column;
+    width: 100%
+}
+
+.calculation-card-row-metric {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 60px;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    align-items: center;
+}
+
+.calculation-card-row {
+    width: 15%;
+    font-family: monospace;
+    padding-left: 20px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

@@ -6,14 +6,15 @@ import { ROUTES, ROUTE_LABELS } from "../../Routes.tsx";
 import "./LoginPage.css";
 import { dest_api } from "../target_config"
 import { useDispatch } from "react-redux";
-import { loginSuccess, setUserEmail } from '../features/authSlice.ts';
+import { loginSuccess, setUserEmail, setIsStaff } from '../features/authSlice.ts';
 
 const LoginPage: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const login = async () => {
     try {
@@ -25,7 +26,12 @@ const LoginPage: FC = () => {
       if (response.status = 200) {
         dispatch(loginSuccess())
         dispatch(setUserEmail(email))
-
+        try {
+        const is_staff = await axios.get( dest_api + '/users/register/');
+        if (is_staff.status = 200) {
+          dispatch(setIsStaff())
+        }
+        } catch (error: any) {}
         navigate(ROUTES.METRICS)
       }
     } catch (error: any) {
@@ -37,16 +43,15 @@ const LoginPage: FC = () => {
     <BasePage crumbs={[{ label: ROUTE_LABELS.HOME, path: ROUTES.HOME },
     { label: ROUTE_LABELS.LOGIN, path: ROUTES.LOGIN }]}>
     <div className="login-container">
-      <h2>Авторизация</h2>
-      <form
+      <form className='login-form'
         onSubmit={(e) => {
           e.preventDefault();
           login();
         }}
       >
         <div>
-          <label htmlFor="email">Электронная почта:</label>
-          <input
+          <label style = {{width: "170px"}} htmlFor="email">Электронная почта</label>
+          <input className='login-input'
             type="email"
             id="email"
             value={email}
@@ -55,8 +60,8 @@ const LoginPage: FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="password">Пароль:</label>
-          <input
+          <label style = {{width: "170px"}} htmlFor="password">Пароль</label>
+          <input className='login-input'
             type="password"
             id="password"
             value={password}
@@ -64,7 +69,7 @@ const LoginPage: FC = () => {
             required
           />
         </div>
-        <button type="submit">Войти</button>
+        <button className='login-button' type="submit">Войти</button>
       </form>
       {error && <div className="error-message">{error}</div>}
     </div>

@@ -1,0 +1,88 @@
+.calculation-card-header {
+    display: flex;
+    flex-direction: row;
+    padding-left: 150px;
+    padding-right: 85px;
+    padding-top: 10px;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    align-items: center;
+}
+
+.headerElem {
+    width: 10%;
+    font-family: monospace;
+}
+
+
+.select-title {
+    font-family: monospace;
+    width: 400px;
+    font-size: large;
+}
+/* Контейнер для кастомного списка */
+.custom-select-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 400px;
+    border-radius: 20px;
+    height: 40px;
+    align-items: center;
+    padding-left: 40px;
+  }
+  
+  /* Кнопка для текущего выбора */
+  .custom-select-button {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 5px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-family: monospace;
+  }
+  
+  /* Скрытый список */
+  .custom-select-options {
+    display: none;
+    border-radius: 10px;
+    list-style-type: none;
+    padding: 0;
+    margin:0;
+    margin-left: 225px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 175px;
+    border: 1px solid #ccc;
+    background-color: white;
+    z-index: 10;
+  }
+  
+  /* Видимый список при клике */
+  .custom-select-container:hover .custom-select-options {
+    display: block;
+  }
+  
+  /* Элементы списка */
+  .custom-select-option {
+    margin:0;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    font-family: monospace;
+  }
+  
+  .custom-select-option:hover {
+    background-color: #e4c200; /* Жёлтая подсветка при наведении */
+  }
+
+  .filters {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  

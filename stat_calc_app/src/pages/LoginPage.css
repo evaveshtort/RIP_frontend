@@ -1,0 +1,27 @@
+.login-form {
+    padding: 30px;
+    font-family: monospace;
+}
+
+.login-button {
+    height: 40px;
+    border-radius: 30px;
+    background-color: #910ed8;
+    color: #ffffff;
+    border-width: 0px;
+    width: 100px;
+}
+
+.login-button:hover {
+    background-color: #e4c200;
+}
+
+.login-input {
+    height: 40px;
+    width: 300px;
+    border-radius: 30px;
+    border-width: 0.1px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 10px;
+}

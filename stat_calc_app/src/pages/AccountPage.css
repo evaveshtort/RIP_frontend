@@ -1,0 +1,30 @@
+.profile-form {
+    padding: 30px;
+    font-family: monospace;
+}
+
+.profile-button {
+    height: 40px;
+    border-radius: 30px;
+    background-color: #910ed8;
+    color: #ffffff;
+    border-width: 0px;
+}
+
+.profile-button:hover {
+    background-color: #e4c200;
+}
+
+label {
+    width: 70px;
+}
+
+.profile-input {
+    height: 40px;
+    width: 300px;
+    border-radius: 30px;
+    border-width: 0.1px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 10px;
+}

@@ -106,6 +106,10 @@ const MetricsListPage: FC = () => {
       });
   };
 
+  const changeClick = () => {
+    navigate(`/metrics_change`)
+  };
+
   return (
     <BasePage
       crumbs={[

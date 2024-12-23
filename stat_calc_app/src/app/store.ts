@@ -3,26 +3,26 @@ import metricsFilterReducer from '../features/metricsFilterSlice';
 import authReducer from '../features/authSlice';
 import calcReducer from '../features/calcSlice';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // использование localStorage по умолчанию
+import storage from 'redux-persist/lib/storage'; 
 
 const authPersistConfig = {
-  key: 'auth', // ключ для persistReducer auth
-  storage, // хранилище для auth
+  key: 'auth', 
+  storage,
 };
 
 const metricsFilterPersistConfig = {
-  key: 'metricsFilter', // ключ для persistReducer metricsFilter
+  key: 'metricsFilter',
   storage,
 };
 
 const calcPersistConfig = {
-  key: 'calc', // ключ для persistReducer calc
+  key: 'calc',
   storage,
 };
 
 export const store = configureStore({
   reducer: {
-    auth: persistReducer(authPersistConfig, authReducer), // применяем persistConfig для auth
+    auth: persistReducer(authPersistConfig, authReducer),
     metricsFilter: persistReducer(metricsFilterPersistConfig, metricsFilterReducer),
     calc: persistReducer(calcPersistConfig, calcReducer),
   },
