@@ -1,0 +1,21 @@
+.container {
+    font-family: monospace;
+}
+
+.addBtn {
+    background-color:#910ed8;
+    height: 35px;
+    border-width: 0;
+    margin-bottom: 10px;
+    width: 120px;
+    color: #ffffff;
+    border-radius: 20px;
+    font-family: monospace;
+    font-weight: lighter;
+    font-size: large;
+    text-align: center;
+  }
+  
+  .addBtn:hover {
+    background-color: #e4c200;
+  }

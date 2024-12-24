@@ -78,4 +78,23 @@ ul {
   padding-right: 1%;
 }
 
+.changeBtn {
+  background-color:#910ed8;
+  height: 35px;
+  border-width: 0;
+  margin-bottom: 10px;
+  width: 160px;
+  margin-right: 10px;
+  color: #ffffff;
+  border-radius: 20px;
+  font-family: monospace;
+  font-weight: lighter;
+  font-size: large;
+  text-align: center;
+}
+
+.changeBtn:hover {
+  background-color: #e4c200;
+}
+
 

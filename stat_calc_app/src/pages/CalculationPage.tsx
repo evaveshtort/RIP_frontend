@@ -4,7 +4,6 @@ import BasePage from "./BasePage";
 import "./CalculationPage.css";
 import { ROUTES, ROUTE_LABELS } from "../../Routes.tsx";
 import { useParams, useNavigate } from "react-router-dom";
-import { api } from '../api';
 import axios from 'axios';
 import { dest_api } from "../target_config";
 import { cntMetricsSet, resetState as resetCalcState } from '../features/calcSlice';

@@ -5,7 +5,9 @@ export const ROUTES = {
     ACCOUNT: "/account",
     CALC: "/draft_calculation",
     CALCS: "/all_calculations",
-    CHANGE: "/metrics_change"
+    CHANGE: "/metrics_change",
+    FORBIDDEN: '/forbidden',
+    NOTFOUND: '/not_found'
   }
   export type RouteKeyType = keyof typeof ROUTES;
   export const ROUTE_LABELS: {[key in RouteKeyType]: string} = {
@@ -15,5 +17,7 @@ export const ROUTES = {
     ACCOUNT: "Личный кабинет",
     CALC: "Черновик расчета",
     CALCS: "Все расчёты",
-    CHANGE: "Редактирование метрик"
+    CHANGE: "Редактирование метрик",
+    FORBIDDEN: "Доступ запрещен",
+    NOTFOUND: "Страница не найдена"
   };

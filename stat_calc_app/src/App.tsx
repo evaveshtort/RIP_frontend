@@ -11,6 +11,9 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { CalculationPage } from "./pages/CalculationPage";
 import  AllCalculationsPage from "./pages/AllCalculationsPage";
+import ChangeMetricsPage from "./pages/ChangeMetricsPage";
+import { ForbiddenPage } from "./pages/403";
+import { NotFoundPage } from "./pages/404";
 
 function App() {
     return (
@@ -25,7 +28,10 @@ function App() {
                   <Route path={`${ROUTES.METRICS}/:id`} element={<MetricDetailsPage />} />
                   <Route path={`${ROUTES.CALC}/:calc_id`} element={<CalculationPage />}/>
                   <Route path={ROUTES.CALCS} element={<AllCalculationsPage />} />
-                  <Route path="*" element={<Navigate to={ROUTES.HOME} />} /> 
+                  <Route path={ROUTES.CHANGE} element={<ChangeMetricsPage />} />
+                  <Route path={ROUTES.FORBIDDEN} element={<ForbiddenPage />} />
+                  <Route path={ROUTES.NOTFOUND} element={<NotFoundPage />} />
+                  <Route path="*" element={<Navigate to={ROUTES.NOTFOUND} />} /> 
               </Routes>
           </BrowserRouter>
         </PersistGate>

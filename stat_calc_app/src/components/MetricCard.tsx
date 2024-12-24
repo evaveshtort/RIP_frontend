@@ -26,7 +26,7 @@ export const MetricCard: FC<ICardProps> = ({
     <div className="card_container">
       <img
         className="cardImage"
-        src={picture_url.replace("http://localhost:9000", dest_minio) || image}
+        src={(picture_url !== null) ? (picture_url.replace("http://localhost:9000", dest_minio) || image):(image)}
         alt="card"
         style={{width:"70%"}}
       />

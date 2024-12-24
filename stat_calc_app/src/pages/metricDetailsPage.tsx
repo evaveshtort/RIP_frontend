@@ -39,7 +39,7 @@ export const MetricDetailsPage: FC = () => {
                 <div className="metricTitle">{pageData.title}</div>
                 <div className="infoSpace">
                   <Image
-                    src={pageData.picture_url.replace("http://localhost:9000", dest_minio) || image}
+                    src={(pageData.picture_url !== null) ? (pageData.picture_url.replace("http://localhost:9000", dest_minio) || image):(image)}
                     alt="card"
                     height={200}
                     style={{ marginRight: "20px" }}

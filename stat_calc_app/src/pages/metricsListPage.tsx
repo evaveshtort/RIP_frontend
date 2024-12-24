@@ -14,6 +14,8 @@ import '../components/InputField.css';
 import { cntMetricsSet, draftCalcIdSet, draftCalcSet } from "../features/calcSlice.ts";
 import { dest_minio, dest_api } from "../target_config"
 import axios from 'axios';
+import { Button} from 'react-bootstrap';
+import { configureAxios } from "../app/axiosConfig";
 
 const MetricsListPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -25,6 +27,11 @@ const MetricsListPage: FC = () => {
   const draftCalcId = useSelector((state: RootState) => state.calc.draftCalcId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { is_staff } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    configureAxios(navigate);
+  }, [navigate]);
 
   useEffect(() => {
     setLoading(true);
@@ -126,6 +133,8 @@ const MetricsListPage: FC = () => {
             onSubmit={handleSearch}
             onReset={handleResetClick}
           />
+          {is_staff && (
+            <Button variant='secondary' className="changeBtn" disabled={loading} onClick={changeClick}>Редактировать</Button>)}
           {draftCalc ? (<div className="cartWithNum">
               <div className="metricsNum">{cntMetrics}</div>
                 <img
