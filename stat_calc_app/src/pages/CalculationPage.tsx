@@ -2,20 +2,28 @@ import React, { useState, useEffect } from "react";
 import { CalcItem } from "../components/CalcItem";
 import BasePage from "./BasePage";
 import "./CalculationPage.css";
+import { Spinner } from 'react-bootstrap';
 import { ROUTES, ROUTE_LABELS } from "../../Routes.tsx";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from 'axios';
-import { dest_api } from "../target_config";
 import { cntMetricsSet, resetState as resetCalcState } from '../features/calcSlice';
-import { useDispatch } from "react-redux";
+import { resetState as resetDataState} from '../features/dataSlice.ts';
+import { useDispatch, useSelector } from "react-redux";
 import {Tooltip as ReactTooltip } from 'react-tooltip';
+import { getCalculationById } from '../app/getCalculationById.ts';
+import { updateCalculation } from '../app/updateCalculation.ts';
+import { deleteCalculation } from '../app/deleteCalculation.ts';
+import { sendCalculation } from '../app/sendCalculation.ts';
+import { updateCalcMetric } from '../app/updateCalcMetric.ts';
+import { AppDispatch, RootState } from '../app/store';
 
 interface Metric {
   id: string;
   title: string;
   pictureUrl: string;
   amountOfData: number;
+  result: number;
 }
+
 
 export const CalculationPage: React.FC = () => {
   const Tooltip: typeof ReactTooltip = ReactTooltip;
@@ -23,102 +31,76 @@ export const CalculationPage: React.FC = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [calcData, setCalcData] = useState("");
+  const [formated, setFormated] = useState<boolean>(false);
   const [withCalc, setWithCalc] = useState<boolean>(false);
-  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const data = useSelector((state: RootState) => state.data.data);
+  const status = useSelector((state: RootState) => state.data.status);
 
   const handleUpdateMetric = async (id: string, newAmount: number) => {
-    setMetrics((prev) =>
-      prev.map((metric) => (metric.id === id ? { ...metric, amountOfData: newAmount } : metric))
-    );
-  
-    try {
-      const response = await axios.put(
-        `${dest_api}/calculations/${calc_id}/update_metric/${id}/`,
-        { amount_of_data: newAmount }
-      );
-      if (response.status === 200) {
-        console.log("Количество успешно обновлено");
-      }
-    } catch (error) {
-      setError("Ошибка обновления метрики");
-      console.error(error);
-    }
+    const c_id = calc_id ?? "-1"
+    dispatch(updateCalcMetric({calc_id:c_id, metric_id:id, amount_of_data:newAmount}))
   };
   
 
-  const handleDeleteCalculations = async (calc_id:string) => {
-    try {
-      const response = await axios.delete( dest_api + '/calculations/' + calc_id + '/delete/');
-      if (response.status = 200) {
-        dispatch(resetCalcState())
-        navigate(`/metrics`)
-      }
-    } catch (error: any) {
-      setError('Ошибка удаления');
-    }
+  const handleDeleteCalculations = async () => {
+    const id = calc_id ?? "-1"
+    dispatch(deleteCalculation(id))
+    navigate(`/metrics`)
   };
 
   const handleChangeCalcData = async () => {
-    try {
-      const response = await axios.put(
-        `${dest_api}/calculations/${calc_id}/update/`,
-        { data_for_calc: calcData }
-      );
-      if (response.status === 200) {
-        console.log("Данные обновлены");
-        if (calcData != "") {
-          setWithCalc(true)
-        }
-        else {
-          setWithCalc(false)
-        }
-      }
-    } catch (error) {
-      setError("Ошибка отправки данных");
-      console.error(error);
+    const id = calc_id ?? "-1"
+    dispatch(updateCalculation({calc_id:id, data_for_calc:calcData}))
+    if (calcData == "" || calcData == null) {
+      setWithCalc(false)
+    }
+    else{
+      setWithCalc(true)
     }
   };
 
   const handleSend = async () => {
-    try {
-      const response = await axios.put(
-        `${dest_api}/calculations/${calc_id}/update_status_user/`
-      );
-      if (response.status === 200) {
-        console.log("Заявка сформирована");
-        dispatch(resetCalcState())
-        navigate(`/metrics`)
-      }
-    } catch (error) {
-      setError("Ошибка формирования");
-      console.error(error);
-    }
+    const id = calc_id ?? "-1"
+    dispatch(sendCalculation(id))
+    navigate(`/metrics`)
   };
-  
-  
-  
 
-  const fetchData = async (calc_id:string) => {
-    try {
-      const response = await axios.get( dest_api + '/calculations/' + calc_id + '/');
-      if (response.status = 200) {
-        const metrics = response.data.metrics.map((metric: any) => ({
+  useEffect(() => {
+    setLoading(true);
+    const id = calc_id ?? "-1"
+    dispatch(getCalculationById(id))
+    setLoading(false)
+    return () => {
+      dispatch(resetDataState())
+    };
+  }, []);
+
+  useEffect(() => {
+    if (status != null) {
+      if (status == 200) {
+        const metrics = data[0].metrics.map((metric: any) => ({
           id: metric.metric_id,
           title: metric.title,
           pictureUrl: metric.picture_url,
           amountOfData: metric.amount_of_data,
+          result: metric.result
         }));
-        console.log(metrics)
-        setMetrics(metrics);
-        setCalcData(response.data.data_for_calc);
-        console.log(response.data.data_for_calc)
-        if (response.data.data_for_calc && response.data.data_for_calc != "") {
-          setWithCalc(true)
+        if (data[0].formation_date != null) {
+          setFormated(true)
         }
         else {
+          setFormated(false)
+        }
+        setMetrics(metrics || [])
+        setCalcData(data[0].data_for_calc);
+        if (data[0].data_for_calc == "" || data[0].data_for_calc == null) {
           setWithCalc(false)
+        }
+        else{
+          setWithCalc(true)
         }
         if (metrics.length === 0) {
           dispatch(resetCalcState())
@@ -128,20 +110,23 @@ export const CalculationPage: React.FC = () => {
           dispatch(cntMetricsSet(metrics.length))
         }
       }
-    } catch (error: any) {
-      navigate(`/metrics`);
-      setError('Ошибка получения данных');
+      else {
+        if (status == 403) {
+          navigate(`/forbidden`)
+        }
+        else {
+          if (status == 404) {
+            navigate(`/not_found`)
+          }
+          else { navigate (`/metrics`)}
+        }
+      }
     }
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    fetchData(calc_id??'-1')
-    setLoading(false)
-  }, []);
+  }, [status, data])
 
   return (
     <BasePage crumbs={[{ label: ROUTE_LABELS.HOME, path: ROUTES.HOME },
+      { label: ROUTE_LABELS.CALCS, path: ROUTES.CALCS },
       { label: ROUTE_LABELS.CALC, path: ROUTES.CALC }]}>
       <div className="upper_calc_list">
         <div className="change_data">
@@ -153,6 +138,7 @@ export const CalculationPage: React.FC = () => {
             placeholder="Введите данные для расчёта через пробел:"
             data-tooltip-id="my-tooltip" 
             data-tooltip-content="Данные для вычислений, вводить нужно через пробел"
+            disabled={formated}
           />
           <Tooltip 
             id="my-tooltip" 
@@ -161,16 +147,22 @@ export const CalculationPage: React.FC = () => {
             style={{ fontFamily: 'monospace', borderRadius: '20px', backgroundColor: '#910ed8'}} 
           />
         </div>
-        <div className="buttons">
-        <button className="customBtn" onClick={handleChangeCalcData}>Сохранить</button>
-        {withCalc ? (<button className="customBtn" onClick={handleSend}>Сформировать</button>):(<></>)}
-        <button className="customBtn" onClick={() => handleDeleteCalculations(calc_id??'-1')}>
-          Удалить
-        </button>
-        </div>
+        {!formated ? (
+          <div className="buttons_calc">
+            <button className="customBtn" onClick={handleChangeCalcData}>Сохранить</button>
+            {withCalc ? (<button className="customBtn" onClick={handleSend}>Сформировать</button>):(<></>)}
+            <button className="customBtn" onClick={() => handleDeleteCalculations()}>
+              Удалить
+            </button>
+            </div>
+        ):(<></>)}
       </div>
-
-      <div className="calc_list">
+      {loading ? (
+        <div className="loadingBg">
+          <Spinner animation="border" />
+        </div>
+      ):
+      (<div className="calc_list">
         {metrics.map((metric) => (
           <CalcItem
             key={metric.id}
@@ -180,10 +172,12 @@ export const CalculationPage: React.FC = () => {
             amountOfData={metric.amountOfData}
             onUpdate={handleUpdateMetric}
             calc_id={calc_id??'-1'}
-            fetchData={() => fetchData(calc_id ?? '-1')}
+            result={metric.result}
+            fetchData={() => dispatch(getCalculationById(calc_id ?? "-1"))}
+            formated={formated}
           />
         ))}
-      </div>
+      </div>)}
     </BasePage>
   );
 };

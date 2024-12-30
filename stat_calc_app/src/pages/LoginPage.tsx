@@ -7,6 +7,7 @@ import "./LoginPage.css";
 import { dest_api } from "../target_config"
 import { useDispatch } from "react-redux";
 import { loginSuccess, setUserEmail, setIsStaff } from '../features/authSlice.ts';
+import { resetState as resetDataState } from '../features/dataSlice';
 
 const LoginPage: FC = () => {
   const [email, setEmail] = useState('');
@@ -24,6 +25,7 @@ const LoginPage: FC = () => {
       });
 
       if (response.status = 200) {
+        dispatch(resetDataState())
         dispatch(loginSuccess())
         dispatch(setUserEmail(email))
         try {

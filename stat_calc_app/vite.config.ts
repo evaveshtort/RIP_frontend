@@ -19,13 +19,14 @@ export default defineConfig({
       "/api": {
         target: "http://localhost:8000",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, "/")
+        rewrite: (path) => path.replace(/^\/api/, "/"),
+        secure: false,
       },
       "/minio": {
         target: "http://localhost:9000",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/minio/, "/")
-      },
+      }
     },
    },
   plugins: [react(), VitePWA({ registerType: 'autoUpdate', devOptions: {

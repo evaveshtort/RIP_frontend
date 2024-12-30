@@ -17,9 +17,11 @@ interface CalcItemProps {
   onUpdate: (id: string, newAmount: number) => void;
   calc_id: string;
   fetchData: () => void;
+  result: number;
+  formated: boolean;
 }
 
-export const CalcItem: React.FC<CalcItemProps> = ({ id, pictureUrl, title, amountOfData, onUpdate, calc_id, fetchData }) => {
+export const CalcItem: React.FC<CalcItemProps> = ({ id, pictureUrl, title, amountOfData, onUpdate, calc_id, fetchData, result, formated }) => {
 
   const cntMetrics = useSelector((state: RootState) => state.calc.cntMetrics);
   const dispatch = useDispatch();
@@ -60,21 +62,25 @@ export const CalcItem: React.FC<CalcItemProps> = ({ id, pictureUrl, title, amoun
               type="number"
               defaultValue={amountOfData}
               onChange={handleChange}
+              disabled={formated}
             />
           </div>
-          <div className="customText">Результат: будет доступен после завершения</div>
+          <div className="customText"> Результат: {result ?? "будет доступен после вычисления"}</div>
           </div>
-          <div className="links">
-          <Link to={`/metrics/${id}`} className="calc-link">
-            Узнать больше &#8594;
-          </Link>
-          <Button
-          className="card-link-del"
-          onClick={() => delClickHandler(calc_id, id)}
-          >
-          Удалить из вычисления &#8594;
-          </Button>
-          </div>
+          {!formated ? (
+            <div className="links">
+            <Link to={`/metrics/${id}`} className="calc-link">
+              Узнать больше &#8594;
+            </Link>
+            <Button
+            className="card-link-del"
+            onClick={() => delClickHandler(calc_id, id)}
+            >
+            Удалить из вычисления &#8594;
+            </Button>
+            </div>
+          ): (<></>)}
+          
         </div>
       </div>
   );

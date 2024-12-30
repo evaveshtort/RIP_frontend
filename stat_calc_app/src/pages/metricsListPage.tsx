@@ -73,7 +73,7 @@ const MetricsListPage: FC = () => {
   };
 
   const handleCalculationsClick = (calc_id: string) => {
-    navigate(`/draft_calculation/${calc_id}`)
+    navigate(`/calculation/${calc_id}`)
   };
 
   const handleCardClick = (id: number) => {
@@ -133,8 +133,6 @@ const MetricsListPage: FC = () => {
             onSubmit={handleSearch}
             onReset={handleResetClick}
           />
-          {is_staff && (
-            <Button variant='secondary' className="changeBtn" disabled={loading} onClick={changeClick}>Редактировать</Button>)}
           {draftCalc ? (<div className="cartWithNum">
               <div className="metricsNum">{cntMetrics}</div>
                 <img
@@ -142,7 +140,23 @@ const MetricsListPage: FC = () => {
                   style={{ height: "35px" }}
                   onClick={() => handleCalculationsClick(draftCalcId)}
                 />
-          </div>): (<></>)}
+          </div>): (
+            <div className="cartWithNum">
+            <div 
+            className="metricsNum" 
+            style={{ backgroundColor: "gray" }}
+          >
+            {cntMetrics}
+          </div>
+          <img
+            src={dest_minio + "/items/shopping-cart.png"}
+            style={{
+              height: "35px",
+              filter: "grayscale(100%)", 
+            }}
+          />
+          </div>
+          )}
         </div>
 
         <MetricsList

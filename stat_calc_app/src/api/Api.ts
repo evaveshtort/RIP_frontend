@@ -35,18 +35,30 @@ export interface User {
   is_superuser?: boolean;
 }
 
-export interface CalculationUpdate {
+export interface Calculation {
+  /** Calc id */
+  calc_id?: number;
+  /**
+   * Creation date
+   * @format date-time
+   */
+  creation_date: string;
+  /**
+   * Formation date
+   * @format date-time
+   */
+  formation_date?: string | null;
+  /**
+   * End date
+   * @format date-time
+   */
+  end_date?: string | null;
+  /** Creator */
+  creator?: string;
+  /** Moderator */
+  moderator?: string;
   /** Data for calc */
   data_for_calc?: string | null;
-}
-
-export interface CalcMetricUpdate {
-  /**
-   * Amount of data
-   * @min -2147483648
-   * @max 2147483647
-   */
-  amount_of_data?: number;
 }
 
 export interface Metric {
@@ -62,12 +74,55 @@ export interface Metric {
    * Description
    * @minLength 1
    */
-  description: string;
+  description?: string | null;
   /**
    * Picture url
    * @maxLength 100
    */
   picture_url?: string | null;
+}
+
+export interface CalculationDetail {
+  calc: Calculation;
+  /**
+   * Amount of data
+   * @min -2147483648
+   * @max 2147483647
+   */
+  amount_of_data?: number;
+  /** Result */
+  result?: number | null;
+  /** Calc metric id */
+  calc_metric_id?: number;
+  metric: Metric;
+}
+
+export interface CalculationUpdate {
+  /** Data for calc */
+  data_for_calc?: string | null;
+}
+
+export interface CalcMetricUpdate {
+  /**
+   * Amount of data
+   * @min -2147483648
+   * @max 2147483647
+   */
+  amount_of_data?: number;
+}
+
+export interface CalcMetric {
+  /**
+   * Amount of data
+   * @min -2147483648
+   * @max 2147483647
+   */
+  amount_of_data?: number;
+  /** Result */
+  result?: number | null;
+  /** Calc metric id */
+  calc_metric_id?: number;
+  metric: Metric;
 }
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -329,11 +384,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/calculations/
      * @secure
      */
-    calculationsList: (params: RequestParams = {}) =>
-      this.request<void, any>({
+    calculationsList: (
+      query?: {
+        status?: string;
+        /** @format date */
+        dateStart?: string;
+        /** @format date */
+        dateEnd?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Calculation, void>({
         path: `/calculations/`,
         method: "GET",
+        query: query,
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -346,10 +412,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     calculationsRead: (calculationId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<CalculationDetail, void>({
         path: `/calculations/${calculationId}/`,
         method: "GET",
         secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -529,7 +596,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
+     * @description Добавляет метрику к черновику расчета. Если черновика нет, создает новый.
      *
      * @tags metrics
      * @name MetricsAddToCalculationCreate
@@ -537,10 +604,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     metricsAddToCalculationCreate: (metricId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<CalcMetric[], void>({
         path: `/metrics/${metricId}/add_to_calculation/`,
         method: "POST",
         secure: true,
+        format: "json",
         ...params,
       }),
 

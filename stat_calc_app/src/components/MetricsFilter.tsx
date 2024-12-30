@@ -22,7 +22,7 @@ const MetricFilter: React.FC<MetricFilterProps> = ({
 }) => {
   const { shouldFilter } = useSelector((state: RootState) => state.metricsFilter);
   return (
-    <div className="searchForm">
+    <div className="searchForm" style={{ position: 'relative' }}>
       <InputField
         value={value}
         setValue={setValue}
@@ -35,10 +35,13 @@ const MetricFilter: React.FC<MetricFilterProps> = ({
         <img
           src= {image}
           style={{
-            width: "35px",
+            width: "20px",
             cursor: "pointer",
-            position: "relative",
             zIndex: 1,
+            position: "absolute",
+            right: "90px",
+            top: "45%",
+            transform: "translateY(-50%)",
           }}
           onClick={onReset}
           alt="Reset"

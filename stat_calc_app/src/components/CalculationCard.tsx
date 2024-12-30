@@ -1,55 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./CalculationCard.css"
-import { dest_minio } from "../target_config"
 import image from "./reset1.png";
 import image2 from "./set.png";
-import { useSelector } from 'react-redux';
-import { RootState } from '../app/store';
+import { useSelector,  useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../app/store';
 import axios from 'axios';
 import { dest_api } from "../target_config"
-
+import { Link } from "react-router-dom";
+import { setReset } from '../app/setReset.ts';
 
 interface Metric {
-  picture_url: string;
-  title: string;
+  metric_id: number;
   amount_of_data: number;
-  result: string | null;
+  result: number;
+  description: string;
+  pictureUrl: string;
+  title: string;
 }
 
 interface CalculationCardProps {
+  key: number;
   calc_id: number;
   data_for_calc: string;
   creation_date: string;
   formation_date?: string | null;
   end_date?: string | null;
-  metrics: Metric[];
   creator: string;
   filter_creator: string;
 }
 
-const onReset = async (calc_id: number) => {
-    try {
-    const response = await axios.put(dest_api + '/calculations/'+calc_id+'/update_status_admin/', 
-        {"status":"отклонен"})
-    if (response.status = 200) {
-        console.log('Статус обновлен');
-    }
-    }catch (error: any) {
-    console.log('Ошибка обновления статуса');
-  }
-};
-
-const onSet = async (calc_id: number) => {
-    try {
-        const response = await axios.put(dest_api + '/calculations/'+calc_id+'/update_status_admin/', 
-            {"status":"завершен"})
-        if (response.status = 200) {
-            console.log('Статус обновлен');
-        }
-        }catch (error: any) {
-        console.log('Ошибка обновления статуса');
-      }
-};
 
 const CalculationCard: React.FC<CalculationCardProps> = ({
   calc_id,
@@ -57,54 +36,69 @@ const CalculationCard: React.FC<CalculationCardProps> = ({
   creation_date,
   formation_date,
   end_date,
-  metrics,
   creator,
   filter_creator
 }) => {
   const { is_staff } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
+  const onSetReset = async (calc_id: number, status:string) => {
+      dispatch(setReset({calc_id:calc_id, status:status}))
+  };
+
+  const [cnt_metrics, setCnt] = useState<number>(0);
+  useEffect(() => {
+    if (calc_id != null){
+    const fetchMetrics = async () => {
+      try {
+        const response = await axios.get(dest_api + '/calculations/' + calc_id + '/');
+        if (response.status === 200) {
+          setCnt(response.data.metrics.filter((metric: Metric) => metric.result != null).length);
+        }
+      } catch (error: any) {
+        console.log('Ошибка при получении метрик:', error.message || error);
+      }
+    };
+    fetchMetrics();
+  };
+  }, [calc_id]);
+  
   return (
     <div>
-    { (filter_creator == null || filter_creator == creator.split('@')[0] || filter_creator == "") && (
-    <div className="calculation-card">
-        { (is_staff && end_date == null) && (
-        <div className="buttons">
-         <img src={image} style={{"height":"25px"}} onClick={() => onReset(calc_id)} />
-         <img src={image2} style={{"height":"25px"}} onClick={() => onSet(calc_id)} />
-         </div>)
-       }
-    <div className="calculation-card-rows-metrics">
-        {metrics.map((metric, index) => (
-        <div key={index} className="calculation-card-row-metric">
-      { !(is_staff && end_date == null) && (<img src={metric.picture_url.replace("http://localhost:9000", dest_minio)} alt="card" style={{ height: "80%"}} />)}
-      <div className ="calculation-card-row">
-        {creator.split('@')[0]}
+    {(filter_creator == null || (creator && creator.split('@')[0] === filter_creator) || filter_creator === "") && (
+  <div className="calculation-card">
+    {(is_staff && !end_date) ? (
+      <div className="buttons">
+        <img src={image} style={{ height: "25px" }} onClick={() => onSetReset(calc_id, "отклонен")} />
+        <img src={image2} style={{ height: "25px" }} onClick={() => onSetReset(calc_id, "завершен")} />
       </div>
-      <div className="calculation-card-row">
-        {data_for_calc}
-      </div>
-      <div className="calculation-card-row">
-        {new Date(creation_date).toLocaleDateString()}
-      </div>
-      <div className="calculation-card-row">
-        {formation_date ? new Date(formation_date).toLocaleDateString() : ""}
-      </div>
-      <div className="calculation-card-row">
-        {end_date ? new Date(end_date).toLocaleDateString() : ""}
-      </div>
-          <div className="calculation-card-row">
-            {metric.title}
-          </div>
-          <div className="calculation-card-row">
-            {metric.amount_of_data}
-          </div>
-          <div className="calculation-card-row">
-            {metric.result ?? ""}
-          </div>
-        </div>
-      ))}
-      </div>
+    ):
+    (<div className="buttons"></div>)}
+    <div className="calculation-card-row">
+      {creator ? creator.split('@')[0] : "Неизвестный автор"}
     </div>
-    )}
+    <div className="calculation-card-row">
+      {data_for_calc}
+    </div>
+    <div className="calculation-card-row">
+      {new Date(creation_date).toLocaleDateString()}
+    </div>
+    <div className="calculation-card-row">
+      {formation_date ? new Date(formation_date).toLocaleDateString() : ""}
+    </div>
+    <div className="calculation-card-row">
+      {end_date ? new Date(end_date).toLocaleDateString() : ""}
+    </div>
+    <div className="calculation-card-row">
+    {cnt_metrics}
+    </div>
+    <div className="calculation-card-row">
+    <Link to={`/calculation/${calc_id}`} className="calc-link">
+                  Вычисление &#8594;
+                </Link>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

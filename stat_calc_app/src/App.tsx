@@ -14,6 +14,7 @@ import  AllCalculationsPage from "./pages/AllCalculationsPage";
 import ChangeMetricsPage from "./pages/ChangeMetricsPage";
 import { ForbiddenPage } from "./pages/403";
 import { NotFoundPage } from "./pages/404";
+import MetricFormPage from "./pages/MetricFormPage";
 
 function App() {
     return (
@@ -31,6 +32,8 @@ function App() {
                   <Route path={ROUTES.CHANGE} element={<ChangeMetricsPage />} />
                   <Route path={ROUTES.FORBIDDEN} element={<ForbiddenPage />} />
                   <Route path={ROUTES.NOTFOUND} element={<NotFoundPage />} />
+                  <Route path="/metrics_form" element={<MetricFormPage />} />
+                  <Route path="/metrics_form/:metricId" element={<MetricFormPage />} />
                   <Route path="*" element={<Navigate to={ROUTES.NOTFOUND} />} /> 
               </Routes>
           </BrowserRouter>

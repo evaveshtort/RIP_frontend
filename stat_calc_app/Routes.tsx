@@ -3,11 +3,12 @@ export const ROUTES = {
     METRICS: "/metrics",
     LOGIN: "/login",
     ACCOUNT: "/account",
-    CALC: "/draft_calculation",
+    CALC: "/calculation",
     CALCS: "/all_calculations",
     CHANGE: "/metrics_change",
     FORBIDDEN: '/forbidden',
-    NOTFOUND: '/not_found'
+    NOTFOUND: '/not_found',
+    METRIC_FORM: '/metric_form'
   }
   export type RouteKeyType = keyof typeof ROUTES;
   export const ROUTE_LABELS: {[key in RouteKeyType]: string} = {
@@ -15,9 +16,10 @@ export const ROUTES = {
     METRICS: "Метрики",
     LOGIN: "Вход",
     ACCOUNT: "Личный кабинет",
-    CALC: "Черновик расчета",
+    CALC: "Расчет",
     CALCS: "Все расчёты",
     CHANGE: "Редактирование метрик",
     FORBIDDEN: "Доступ запрещен",
-    NOTFOUND: "Страница не найдена"
+    NOTFOUND: "Страница не найдена",
+    METRIC_FORM: "Форма метрики"
   };

@@ -1,24 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { dest_api } from "../target_config";
 import "./AllCalculationsPage.css";
 import BasePage from "./BasePage";
 import { ROUTES, ROUTE_LABELS } from "../../Routes.tsx";
 import { Spinner } from "react-bootstrap";
 import CalculationCard from "../components/CalculationCard.tsx";
-import { useSelector } from 'react-redux';
-import { RootState } from '../app/store';
-import { configureAxios } from "../app/axiosConfig";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-interface MetricDetail {
-  amount_of_data: number;
-  result: string | null;
-  metric_id: number;
-  title: string;
-  description: string;
-  picture_url: string;
-}
+import { AppDispatch, RootState } from '../app/store';
+import { getCalculations } from '../app/getCalculations.ts';
+import { resetState as resetDataState} from '../features/dataSlice.ts';
 
 interface CalculationMetric {
   calc_id: number;
@@ -28,64 +18,62 @@ interface CalculationMetric {
   creator: string;
   moderator: string | null;
   data_for_calc: string;
-  metrics: MetricDetail[];
 }
 
 const AllCalculationsPage: React.FC = () => {
   const [calculations, setCalculations] = useState<CalculationMetric[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [creatorFilter, setCreatorFilter] = useState<string>("");
   const [minDate, setMinDate] = useState<string>("");
   const [maxDate, setMaxDate] = useState<string>("");
+  const [uniqueCreators, setCreators] = useState<string[]>([]);
 
   const { is_staff } = useSelector((state: RootState) => state.auth);
+  const data = useSelector((state: RootState) => state.data.all_calc_data);
+  const status = useSelector((state: RootState) => state.data.all_calc_status);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    configureAxios(navigate);
-  }, [navigate]);
+      setLoading(true);
+      dispatch(getCalculations({status:statusFilter, dateStart: minDate, dateEnd:maxDate}))
+      setLoading(false)
+      return () => {
+        dispatch(resetDataState())
+      };
+    }, []);
 
-  // Функция для загрузки вычислений с деталями
-  const fetchCalculationsWithDetails = async () => {
-    try {
-      const params: any = {};
-      if (statusFilter) params.status = statusFilter;
-      if (minDate) params.dateStart = minDate;
-      if (maxDate) params.dateEnd = maxDate;
+  useEffect(() => {
+    dispatch(getCalculations({status:statusFilter, dateStart: minDate, dateEnd:maxDate}))
+  }, [statusFilter, minDate, maxDate]
+  )
 
-      const response = await axios.get(`${dest_api}/calculations/`, { params });
-      const calculations = response.data;
-
-      const detailedCalculations = await Promise.all(
-        calculations.map(async (calc: any) => {
-          const detailResponse = await axios.get(`${dest_api}/calculations/${calc.calc_id}/`);
-          return {
-            ...calc,
-            metrics: detailResponse.data.metrics || [],
-          };
-        })
-      );
-
-      return detailedCalculations; // Возвращаем данные для последующего сравнения
-    } catch (err) {
-      console.error(err);
-      setError("Ошибка загрузки данных");
-      return []; // Возвращаем пустой массив в случае ошибки
-    }
-  };
-
-  // Функция для проверки изменений и обновления данных
-  const updateCalculations = (newCalculations: CalculationMetric[]) => {
-    if (JSON.stringify(newCalculations) !== JSON.stringify(calculations)) {
-      setCalculations(newCalculations);
-    }
-  };
-
-
-
+  useEffect(() => {
+      if (status != null) {
+        if (status == 200) {
+          setCalculations(data[0] || [])
+          if (data[0].length > 0) {
+            const creators = Array.from(
+              new Set(calculations.map((calc) => calc.creator.split("@")[0]))
+            );
+            setCreators(creators)
+          }
+        }
+        else {
+          if (status == 403) {
+            navigate(`/forbidden`)
+          }
+          else {
+            if (status == 404) {
+              navigate(`/not_found`)
+            }
+            else { navigate (`/metrics`)}
+          }
+        }
+      }
+    }, [status, data])
 
   useEffect(() => {
     let isActive = true; 
@@ -93,11 +81,7 @@ const AllCalculationsPage: React.FC = () => {
     const pollData = async () => {
       if (!isActive) return;
 
-
-      const newCalculations = await fetchCalculationsWithDetails();
-      if (isActive && JSON.stringify(newCalculations) !== JSON.stringify(calculations)) {
-        updateCalculations(newCalculations);
-      }
+      dispatch(getCalculations({status:statusFilter, dateStart: minDate, dateEnd:maxDate}))
 
       setLoading(false);
 
@@ -110,10 +94,11 @@ const AllCalculationsPage: React.FC = () => {
 
     return () => {
       isActive = false;
+      dispatch(resetDataState())
     };
   }, [statusFilter, minDate, maxDate, calculations]);
 
-  // Обработчики изменения даты
+
   const handleMinDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMinDate(event.target.value);
   };
@@ -122,7 +107,7 @@ const AllCalculationsPage: React.FC = () => {
     setMaxDate(event.target.value);
   };
 
-  // Обработчик изменения выбора creator
+
   const handleCreatorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCreatorFilter(event.target.value);
   };
@@ -132,10 +117,6 @@ const AllCalculationsPage: React.FC = () => {
     setStatusFilter(selectedStatus);
   };
 
-  // Извлекаем уникальные значения для creator
-  const uniqueCreators = Array.from(
-    new Set(calculations.map((calc) => calc.creator.split("@")[0]))
-  );
 
   return (
     <BasePage
@@ -145,7 +126,6 @@ const AllCalculationsPage: React.FC = () => {
       ]}
     >
       <div className="calculations-page">
-        {error && <p className="error">{error}</p>}
         {loading && (
           <div className="loadingBg">
             <Spinner animation="border" />
@@ -236,22 +216,20 @@ const AllCalculationsPage: React.FC = () => {
               <div className="headerElem">Дата создания</div>
               <div className="headerElem">Дата формирования</div>
               <div className="headerElem">Дата завершения</div>
-              <div className="headerElem">Метрика</div>
-              <div className="headerElem">Кол-во элементов</div>
-              <div className="headerElem">Результат</div>
+              <div className="headerElem">Кол-во результатов</div>
+              <div className="headerElem">Ссылка</div>
             </div>
 
             <div className="calculation-cards-container">
               {calculations.map((calc) => (
                 <CalculationCard
+                  calc_id = {calc.calc_id}
                   creator={calc.creator}
                   key={calc.calc_id}
-                  calc_id={calc.calc_id}
                   data_for_calc={calc.data_for_calc}
                   creation_date={calc.creation_date}
                   formation_date={calc.formation_date}
                   end_date={calc.end_date}
-                  metrics={calc.metrics}
                   filter_creator={creatorFilter} />
               ))}
             </div>

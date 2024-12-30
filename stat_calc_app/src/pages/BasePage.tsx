@@ -14,6 +14,7 @@ import axios from 'axios';
 import { resetState as resetAuthState } from '../features/authSlice';
 import { resetState as resetMetricsFilterState } from '../features/metricsFilterSlice';
 import { resetState as resetCalcState } from '../features/calcSlice';
+import { resetState as resetDataState } from '../features/dataSlice';
 
 // Определение интерфейса для пропсов компонента
 interface IBasePageProps {
@@ -23,7 +24,7 @@ interface IBasePageProps {
 
 const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isLoggedIn, email } = useSelector((state: RootState) => state.auth);
+  const { isLoggedIn, email, is_staff } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -34,6 +35,7 @@ const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
         dispatch(resetAuthState()); 
         dispatch(resetMetricsFilterState()); 
         dispatch(resetCalcState()); 
+        dispatch(resetDataState());
         navigate(ROUTES.METRICS)
       }
     } catch (error: any) {
@@ -56,6 +58,7 @@ const BasePage: React.FC<IBasePageProps> = ({ crumbs, children }) => {
               <Nav.Link as={NavLink} to={ROUTES.LOGIN} className="nav-link">Войти</Nav.Link>
             ) : (
               <>
+                {is_staff && <Nav.Link as={NavLink} to={ROUTES.CHANGE} className="nav-link">Редактирование</Nav.Link>}
                 <Nav.Link as={NavLink} to={ROUTES.CALCS} className="nav-link">Вычисления</Nav.Link>
                 <Nav.Link as={NavLink} to={ROUTES.ACCOUNT} className="nav-link">Личный кабинет {email.split('@')[0]}</Nav.Link>
                 <Nav.Link onClick={handleLogout} className="nav-link">Выйти</Nav.Link>

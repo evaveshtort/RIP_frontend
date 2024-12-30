@@ -3,7 +3,8 @@ import metricsFilterReducer from '../features/metricsFilterSlice';
 import authReducer from '../features/authSlice';
 import calcReducer from '../features/calcSlice';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; 
+import storage from 'redux-persist/lib/storage';
+import { dataReducer } from '../features/dataSlice';  // Импортируем редьюсер
 
 const authPersistConfig = {
   key: 'auth', 
@@ -20,11 +21,17 @@ const calcPersistConfig = {
   storage,
 };
 
+const dataPersistConfig = {
+  key: 'calc',
+  storage,
+};
+
 export const store = configureStore({
   reducer: {
     auth: persistReducer(authPersistConfig, authReducer),
     metricsFilter: persistReducer(metricsFilterPersistConfig, metricsFilterReducer),
     calc: persistReducer(calcPersistConfig, calcReducer),
+    data: persistReducer(dataPersistConfig, dataReducer)
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -39,4 +46,3 @@ export type AppDispatch = typeof store.dispatch;
 
 export const persistor = persistStore(store);
 export default store;
-
