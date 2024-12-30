@@ -9,6 +9,12 @@
 
 spa: Создание базового SPA на React
 
+tauri: Создание таури-приложения и pages
+
+authorisation: Добавление авторизации и интерфеса авторизованного пользователя
+
+moderator: Добавление интерфейса диспетчера вычислений
+
 
 Ссылка на репозиторий с бэкендом: https://github.com/evaveshtort/Statistician-backend
 
